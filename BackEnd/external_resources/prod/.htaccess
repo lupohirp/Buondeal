@@ -1,0 +1,107 @@
+# Enable cross domain access control
+SetEnvIf Origin "http(s)?://(.+\.)?buondeal\.com(:\d{1,5})?$" CRS=$0
+Header always set Access-Control-Allow-Origin "%{CRS}e" env=CRS
+Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header always set Access-Control-Allow-Credentials true
+Header always set Access-Control-Allow-Headers "authorization, content-type, accept, origin,pragma,cache-control,expires"
+
+RewriteEngine On
+RewriteRule api/v1/users/(.*)$ backend/api/users/v1/users.php [QSA,NC,L]
+RewriteRule api/v1/confirm/(.*)$ backend/api/confirm/v1/confirm.php [QSA,NC,L]
+RewriteRule api/v1/partners/(.*)$ backend/api/partners/v1/partners.php [QSA,NC,L]
+RewriteRule api/v1/products/(.*)$ backend/api/products/v1/products.php [QSA,NC,L]
+RewriteRule api/v1/deals/(.*)$ backend/api/deals/v1/deals.php [QSA,NC,L]
+RewriteRule api/v1/anag_forwarders/(.*)$ backend/api/anag_forwarders/v1/anag_forwarders.php [QSA,NC,L]
+RewriteRule api/v1/anag_categories/(.*)$ backend/api/anag_categories/v1/anag_categories.php [QSA,NC,L]
+RewriteRule api/v1/anag_subcategories/(.*)$ backend/api/anag_subcategories/v1/anag_subcategories.php [QSA,NC,L]
+RewriteRule api/v1/anag_variants/(.*)$ backend/api/anag_variants/v1/anag_variants.php [QSA,NC,L]
+RewriteRule oauth2/token/(.*)$ backend/authorization/BD_TOKEN.php [QSA,NC,L]
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule .* / [R=200,L]
+RewriteBase /
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://test.buondeal.com/$1 [R,L]
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+
+
+#ENABLE GZIP COMPRESSION TO IMPROVE PERFORMANCE
+# AddEncoding allows you to have certain browsers uncompress information on the fly.
+AddEncoding gzip .gz
+
+#Serve gzip compressed CSS files if they exist and the client accepts gzip.
+RewriteCond %{HTTP:Accept-encoding} gzip
+RewriteCond %{REQUEST_FILENAME}\.gz -s
+RewriteRule ^(.*)\.css $1\.css\.gz [QSA]
+
+# Serve gzip compressed JPG files if they exist and the client accepts gzip.
+RewriteCond %{HTTP:Accept-encoding} gzip
+RewriteCond %{REQUEST_FILENAME}\.gz -s
+RewriteRule ^(.*)\.jpg $1\.jpg\.gz [QSA]
+
+# Serve gzip compressed PNG files if they exist and the client accepts gzip.
+RewriteCond %{HTTP:Accept-encoding} gzip
+RewriteCond %{REQUEST_FILENAME}\.gz -s
+RewriteRule ^(.*)\.png $1\.png\.gz [QSA]
+
+# Serve gzip compressed JPEG files if they exist and the client accepts gzip.
+RewriteCond %{HTTP:Accept-encoding} gzip
+RewriteCond %{REQUEST_FILENAME}\.gz -s
+RewriteRule ^(.*)\.jpeg $1\.jpeg\.gz [QSA]
+
+RewriteCond %{HTTP:Accept-encoding} gzip
+RewriteCond %{REQUEST_FILENAME}\.gz -s
+RewriteRule ^(.*)\.json $1\.json\.gz [QSA]
+
+RewriteCond %{HTTP:Accept-encoding} gzip
+RewriteCond %{REQUEST_FILENAME}\.gz -s
+RewriteRule ^(.*)\.js $1\.js\.gz [QSA]
+
+# Serve correct content types, and prevent mod_deflate double gzip.
+RewriteRule \.css\.gz$ - [T=text/css,E=no-gzip:1,E=is_gzip:1]
+RewriteRule \.js\.gz$ - [T=text/javascript,E=no-gzip:1,E=is_gzip:1]
+RewriteRule \.jpg\.gz$ - [T=image/jpg,E=no-gzip:1,E=is_gzip:1]
+RewriteRule \.jpeg\.gz$ - [T=image/jpeg,E=no-gzip:1,E=is_gzip:1]
+RewriteRule \.png\.gz$ - [T=image/png,E=no-gzip:1,E=is_gzip:1]
+RewriteRule \.json\.gz$ - [T=application/json,E=no-gzip:1,E=is_gzip:1]
+Header set Content-Encoding "gzip" env=is_gzip
+# SET EXPIRE HEADERS TO IMPROVE PERFORMANCE
+<ifModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 2 days"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/jpg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType application/x-shockwave-flash "access plus 1 month"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType text/javascript "access plus 1 month"
+  ExpiresByType application/pdf "access plus 1 month"
+  ExpiresByType application/javascript "access plus 2 week"
+  ExpiresByType application/x-javascript "access plus 2 week"
+  ExpiresByType text/javascript "access plus 2 week"
+  ExpiresByType text/html "access plus 600 seconds"
+  ExpiresByType application/xhtml+xml "access plus 600 seconds"
+</ifModule>
+# END Expire headers
+# BEGIN Cache-Control Headers
+<ifModule mod_headers.c>
+  <filesMatch "\.(ico|jpe?g|png|gif|swf)$">
+    Header set Cache-Control "public"
+  </filesMatch>
+  <filesMatch "\.(css)$">
+    Header set Cache-Control "public"
+  </filesMatch>
+  <filesMatch "\.(js)$">
+    Header set Cache-Control "public"
+  </filesMatch>
+  <filesMatch "\.(x?html?|php)$">
+    Header set Cache-Control "private, must-revalidate"
+  </filesMatch>
+</ifModule>
+# END Cache-Control Headers

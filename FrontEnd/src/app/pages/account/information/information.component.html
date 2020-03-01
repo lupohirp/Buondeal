@@ -1,0 +1,16 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-sm="50" class="p-2" style="margin : 0 auto !important">
+        <h2 class="text-muted text-center">Account details</h2>
+        <form [formGroup]="infoForm" (ngSubmit)="onInfoFormSubmit(infoForm.value)">
+            <mat-form-field class="w-100 mt-1">
+                <input matInput placeholder="Email" formControlName="email" required>
+                <mat-error *ngIf="infoForm.controls.email.errors?.required">Campo Obbligatorio</mat-error>
+                <mat-error *ngIf="infoForm.controls.email.hasError('invalidEmail')">Indirizzo email non valido
+                </mat-error>
+            </mat-form-field>
+            <div class="text-center mt-2">
+                <button mat-raised-button color="primary" (click)="onInfoFormSubmit(infoForm.value)">Aggiorna</button>
+            </div>
+        </form>
+    </div>
+</div>

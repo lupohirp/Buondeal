@@ -1,0 +1,32 @@
+<mat-card>
+    <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-sm="50" class="p-2-header" style="background: black">
+            <div class="text-center">
+                <img src="../../../assets/images/logos/logo-small.webp">
+            </div>
+        </div>
+    </div>
+    <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-sm="50" class="p-2">
+            <h2 class="text-muted text-center">Accedi alla tua area utente</h2>
+            <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm.value)">
+                <mat-form-field class="w-100 mt-2">
+                    <input matInput placeholder="Username o Email" formControlName="username" required>
+                    <mat-error *ngIf="loginForm.controls.username.errors?.required">Campo Obbligatorio</mat-error>
+                </mat-form-field>
+                <mat-form-field class="w-100 mt-1">
+                    <input matInput type="password" placeholder="Password" formControlName="password" required>
+                    <mat-error *ngIf="loginForm.controls.password.errors?.required">Campo Obbligatorio</mat-error>
+                </mat-form-field>
+                <div class="text-center mt-2">
+                    <button mat-raised-button color="accent">
+                        Login
+                    </button>
+                </div>
+                <div class="text-center mt-2 text-muted">
+                    <a (click)="goToRegisterPage()">Non hai un account?Registrati!</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</mat-card>

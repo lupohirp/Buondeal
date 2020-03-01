@@ -1,0 +1,66 @@
+<mat-sidenav-container style="background-color: white">
+  <mat-horizontal-stepper color="accent" [linear]="false" #stepper (selectionChange)="selectionChange($event)">
+    <mat-step>
+      <ng-template matStepLabel><span [ngStyle]="{'color': isGeneralValid() ? '#248eb9' : 'red'}">Generale</span>
+      </ng-template>
+      <app-general [formGroup]="generalFormGroup"></app-general>
+      <div>
+        <button mat-fab matStepperNext (click)="loadVariants(1)"
+          style="float: right;margin-right: 3%; margin-top: 1%;margin-bottom: 1%">
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel><span [ngStyle]="{'color': isVariantsValid() ? '#248eb9' : 'red'}">Varianti</span>
+      </ng-template>
+      <app-variants [formGroup]="generalFormGroup" [anagVariants]="anagVariants"></app-variants>
+      <div>
+        <button mat-fab matStepperPrev style="float: left;margin-right: 3%; margin-top: 1%;margin-bottom: 1%">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+      <div>
+        <button mat-fab matStepperNext style="float: right;margin-right: 3%; margin-top: 1%;margin-bottom: 1%">
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </mat-step>
+
+
+    <mat-step>
+      <ng-template matStepLabel> <span [ngStyle]="{'color': isShipmentValid() ? '#248eb9' : 'red'}">Spedizioni</span>
+      </ng-template>
+      <app-shipment [formGroup]="generalFormGroup"></app-shipment>
+      <div>
+        <button mat-fab matStepperPrev style="float: left;margin-right: 3%; margin-top: 1%;margin-bottom: 1%">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+      <div>
+        <button mat-fab matStepperNext style="float: right;margin-right: 3%; margin-top: 1%;margin-bottom: 1%">
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel> <span>SEO</span>
+      </ng-template>
+      <app-seo-definer [formGroup]="generalFormGroup"></app-seo-definer>
+      <div>
+        <button mat-fab matStepperPrev style="float: left;margin-right: 3%; margin-top: 1%;margin-bottom: 1%">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+      <div>
+        <button mat-raised-button (click)="saveObject()" color="accent"
+          style="float: right;margin-right: 3%; margin-top: 1%;margin-bottom: 1%">Vendi!</button>
+      </div>
+    </mat-step>
+
+
+  </mat-horizontal-stepper>
+
+</mat-sidenav-container>

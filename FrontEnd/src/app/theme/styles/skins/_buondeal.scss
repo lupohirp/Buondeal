@@ -1,0 +1,7 @@
+@import "../../../../assets/styles/buondeal_palette";
+
+$buondeal-primary: mat-palette($mat-buondeal, 50, 500);
+$buondeal-accent: mat-palette($mat-buondeal, 100, 100, 100);
+$buondeal-warn: mat-palette($mat-red, 500, A200, 800);
+
+$buondeal-theme: mat-light-theme($buondeal-primary, $buondeal-accent, $buondeal-warn);

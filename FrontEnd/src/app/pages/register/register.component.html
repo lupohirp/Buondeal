@@ -1,0 +1,54 @@
+<mat-card>
+  <div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-sm="50" class="p-2-header" style="background: black">
+      <div class="text-center">
+        <img src="../../../assets/images/logos/logo-small.webp">
+      </div>
+    </div>
+  </div>
+  <div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-sm="50" class="p-2">
+      <div class="text-muted text-center">
+        <h1>Registrati a BuonDeal!</h1>
+      </div>
+      <form [formGroup]="registerForm" (ngSubmit)="onRegisterFormSubmit(registerForm.value)">
+        <mat-form-field class="w-100 mt-2">
+          <input matInput placeholder="Username" formControlName="username" required>
+          <mat-error *ngIf="registerForm.controls.username.errors?.required">Campo Obbligatorio</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100 mt-1">
+          <input matInput placeholder="Nome" formControlName="name" required>
+          <mat-error *ngIf="registerForm.controls.name.errors?.required">Campo Obbligatorio</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100 mt-1">
+          <input matInput placeholder="Cognome" formControlName="surname" required>
+          <mat-error *ngIf="registerForm.controls.name.errors?.required">Campo Obbligatorio</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100 mt-1">
+          <input matInput placeholder="Email" formControlName="email" required>
+          <mat-error *ngIf="registerForm.controls.email.errors?.required">Campo Obbligatorio</mat-error>
+          <mat-error *ngIf="registerForm.controls.email.hasError('invalidEmail')">Indirizzo Email non valido</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100 mt-1">
+          <input matInput placeholder="Password" formControlName="password" type="password" minlength="6" required>
+          <mat-error *ngIf="registerForm.controls.password.errors?.required">Campo Obbligatorio</mat-error>
+          <mat-error *ngIf="registerForm.controls.password.hasError('minlength')">La Password deve essere almeno di 6
+            caratteri</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100 mt-1">
+          <input matInput placeholder="Conferma Password" formControlName="confirmPassword" type="password" required>
+          <mat-error *ngIf="registerForm.controls.confirmPassword.errors?.required">Campo Obbligatorio
+          </mat-error>
+          <mat-error *ngIf="registerForm.controls.confirmPassword.hasError('mismatchedPasswords')">La Password non
+            coincide. Ricontrolla
+          </mat-error>
+        </mat-form-field>
+        <div class="text-center mt-2">
+          <button type="submit" mat-raised-button color="accent">
+            Registrati
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</mat-card>

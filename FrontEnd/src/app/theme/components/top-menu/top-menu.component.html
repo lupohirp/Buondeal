@@ -1,0 +1,30 @@
+<div class="top-menu">
+    <a mat-button [matMenuTriggerFor]="accountMenu" #accountMenuTrigger="matMenuTrigger">
+        <mat-icon class="mat-icon-md account-icon">person</mat-icon>
+    </a>
+    <mat-menu #accountMenu="matMenu" [overlapTrigger]="false" xPosition="before" class="app-dropdown account">
+        <span (mouseleave)="accountMenuTrigger.closeMenu()">
+            <div fxLayout="row" fxLayoutAlign="space-around center" class="user-info" *ngIf="isLoggedIn()">
+                <img src="assets/images/others/user.webp" alt="user-image" width="50">
+                <!-- (152<mat-icon class="mat-icon-xs">star</mat-icon> -->
+                <p>{{getLoggedUser().name}} {{getLoggedUser().surname}} <br> <small>{{getLoggedUser().username}}</small>
+                </p>
+            </div>
+            <div class="divider"></div>
+            <a mat-menu-item routerLink="/account" *ngIf="isLoggedIn()">
+                <span>Il mio account</span>
+            </a>
+            <a mat-menu-item routerLink="/manage-buondeal" *ngIf="isLoggedIn()">
+                <span>La mia vetrina</span>
+            </a>
+            <div class="divider"></div>
+            <a mat-menu-item *ngIf="isLoggedIn()" (click)="logout()">
+                <span>Esci</span>
+            </a>
+            <a mat-menu-item routerLink="/sign-in" *ngIf="!isLoggedIn()">
+                <span>Accedi</span>
+            </a>
+        </span>
+    </mat-menu>
+
+</div>

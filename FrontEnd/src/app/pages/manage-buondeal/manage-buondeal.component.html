@@ -1,0 +1,190 @@
+<mat-card>
+
+  <mat-sidenav-container style="background-color: white">
+    <mat-sidenav-content class="account-content" ngClass.gt-sm="p-left">
+      <div fxLayout="row" fxLayoutAlign="space-between " class="p-3 header-row text-muted" *ngIf="hideFABbackButton()">
+        <button mat-fab (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div *ngIf="hideFABbackButton()">
+          <h1 class="p-3 header-row text-muted"> {{operation_title}}</h1>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="p-3 header-row text-muted"
+        *ngIf="!hideComponents()">
+        <h1> La mia vetrina </h1>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="header-row text-muted " *ngIf="!hideComponents()">
+        <mat-divider></mat-divider>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between center" class=" p-3 header-row text-muted"
+        *ngIf="!hideComponents()">
+
+        <!--https://material.angular.io/components/list/overview-->
+        <div style="text-align: center; margin: 0 auto !important">
+          <button mat-fab (click)="goTo(links[0].href)" class="my-fab">
+            <mat-icon>{{links[0].icon}}</mat-icon>
+          </button>
+          <div class="mt-2">{{links[0].name}}</div>
+        </div>
+        <div style="text-align: center; margin: 0 auto !important">
+          <button mat-fab (click)="goTo(links[1].href)">
+            <mat-icon>{{links[1].icon}}</mat-icon>
+          </button>
+          <div class="mt-2">{{links[1].name}}</div>
+        </div>
+        <div style="text-align: center; margin: 0 auto !important">
+          <button mat-fab (click)="goTo(links[2].href)">
+            <mat-icon>{{links[2].icon}}</mat-icon>
+          </button>
+          <div class="mt-2">{{links[2].name}}</div>
+        </div>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="p-3 header-row text-muted mt-3"
+        *ngIf="!hideComponents()">
+        <h1> I miei oggetti in vendita </h1>
+        <mat-form-field *ngIf="dataSource" appearance="outline">
+          <mat-label>Filtra i risultati</mat-label>
+          <input matInput (keyup)="applyFilter($event.target.value)">
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="header-row text-muted " *ngIf="!hideComponents()">
+        <mat-divider></mat-divider>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="p-3 header-row text-muted"
+        *ngIf="!hideComponents()">
+
+        <table mat-table [dataSource]="dataSource" class="w-100" *ngIf="dataSource">
+
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef> Titolo</th>
+            <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="categories">
+            <th mat-header-cell *matHeaderCellDef> Categorie </th>
+            <td mat-cell *matCellDef="let element"> {{element.categories}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="start_sold_date">
+            <th mat-header-cell *matHeaderCellDef> Messo in vendita il </th>
+            <td mat-cell *matCellDef="let element"> {{element.start_sold_date | date: 'dd/MM/yyyy'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Azioni </th>
+            <td mat-cell *matCellDef="let element"><button mat-mini-fab color="accent" matTooltip="Visualizza"
+                style="margin-right:5%" (click)="viewProduct(element)">
+                <mat-icon>remove_red_eye</mat-icon>
+              </button>
+              <button mat-mini-fab color="accent" matTooltip="Modifica" class="btn-invoice" style="margin-right:5%"
+                (click)="editProduct(element)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-mini-fab color="accent" matTooltip="Elimina" class="btn-invoice" style="margin-right:5%"
+                (click)="deleteProduct(element)">
+                <mat-icon>delete</mat-icon>
+              </button>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div *ngIf="!dataSource && !emptySoldObject" style="display: flex;margin: 0 auto !important">
+          <mat-progress-spinner color="accent" mode="indeterminate" strokeWidth="3" [diameter]="50">
+          </mat-progress-spinner>
+        </div>
+
+        <div *ngIf="!dataSource && emptySoldObject" style="display: flex;margin: 0 auto !important">
+          Nessun oggetto in vendita.
+        </div>
+
+      </div>
+
+
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="p-3 header-row text-muted" style="float: right"
+        *ngIf="!hideComponents()">
+        <mat-paginator #soldPaginator [length]="selledObjects" [pageSize]="5" [hidePageSize]="true"></mat-paginator>
+
+      </div>
+
+
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="p-3 header-row text-muted mt-3 w-100"
+        *ngIf="!hideComponents()">
+        <h1> I miei Deals </h1>
+        <mat-form-field *ngIf="dealsDataSource" appearance="outline">
+          <mat-label>Filtra i risultati</mat-label>
+          <input matInput (keyup)="applyFilter($event.target.value)">
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="header-row text-muted " *ngIf="!hideComponents()">
+        <mat-divider></mat-divider>
+      </div>
+
+
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="p-3 header-row text-muted"
+        *ngIf="!hideComponents()">
+
+        <table mat-table [dataSource]="dealsDataSource" class="w-100" *ngIf="dealsDataSource">
+
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef> Titolo</th>
+            <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="categories">
+            <th mat-header-cell *matHeaderCellDef> Categorie </th>
+            <td mat-cell *matCellDef="let element"> {{element.categories}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="start_sold_date">
+            <th mat-header-cell *matHeaderCellDef> Messo in vendita il </th>
+            <td mat-cell *matCellDef="let element"> {{element.start_sold_date | date: 'dd/MM/yyyy'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Azioni </th>
+            <td mat-cell *matCellDef="let element"><button mat-mini-fab color="accent" matTooltip="Visualizza"
+                style="margin-right:5%" (click)="viewDeal(element)">
+                <mat-icon>remove_red_eye</mat-icon>
+              </button>
+              <button mat-mini-fab color="accent" matTooltip="Modifica" class="btn-invoice" style="margin-right:5%"
+                (click)="editProduct(element)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-mini-fab color="accent" matTooltip="Elimina" class="btn-invoice" style="margin-right:5%"
+                (click)="deleteProduct(element)">
+                <mat-icon>delete</mat-icon>
+              </button>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div *ngIf="!dealsDataSource && !emptyDealsObject" style="display: flex;margin: 0 auto !important">
+          <mat-progress-spinner color="accent" mode="indeterminate" strokeWidth="3" [diameter]="50">
+          </mat-progress-spinner>
+        </div>
+
+        <div *ngIf="!dealsDataSource && emptyDealsObject" style="display: flex;margin: 0 auto !important">
+          Nessun Deal in vendita.
+        </div>
+
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="p-3 header-row text-muted" style="float: right"
+        *ngIf="!hideComponents()">
+        <mat-paginator #dealsPaginator [length]="dealsObjects" [pageSize]="5" [hidePageSize]="true"></mat-paginator>
+
+      </div>
+
+      <div class=" mt-3" *ngIf="hideComponents()">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+
+  </mat-sidenav-container>
+</mat-card>

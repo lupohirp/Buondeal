@@ -1,0 +1,321 @@
+<div fxLayout="row wrap" *ngIf="!already_partner">
+  <div fxFlex="100" fxFlex.gt-sm="50" class="p-2" style="margin : 0 auto !important">
+    <h2 class="text-muted text-center">Diventa Partner</h2>
+    <mat-radio-group class="partner-radio-group text-muted text-center" [(ngModel)]="partner_type">
+      <mat-radio-button value="1" class="partner-radio-button" (change)="createForm($event)">Ditta</mat-radio-button>
+      <mat-radio-button value="2" class="partner-radio-button" (change)="createForm($event)">Professionista
+      </mat-radio-button>
+      <mat-radio-button value="3" class="partner-radio-button" (change)="createForm($event)">Società</mat-radio-button>
+    </mat-radio-group>
+
+    <!-- Inizio Ditta Form -->
+
+    <form [formGroup]="partnerIndustryForm" (ngSubmit)="onPartnerFormSubmit(partnerIndustryForm.value)"
+      *ngIf="partner_type == 1 && partnerIndustryForm">
+      <mat-form-field class="w-100 mt-2">
+        <mat-icon class="icon-prefix" color="accent">person </mat-icon>
+        <input matInput placeholder="  Titolare Ditta (Nome Cognome) " formControlName="owner" required>
+        <mat-error *ngIf="partnerIndustryForm.controls.owner.errors?.required">Campo Obbligatorio</mat-error>
+        <mat-error *ngIf="partnerIndustryForm.controls.owner.hasError('invaildNameSurname')">Inserire Nome e Cognome
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1">
+        <mat-icon class="icon-prefix" color="accent">contact_mail </mat-icon>
+        <input matInput placeholder="Codice Fiscale" formControlName="fiscal_code" required>
+        <mat-error *ngIf="partnerIndustryForm.controls.fiscal_code.errors?.required">Campo Obbligatorio</mat-error>
+        <mat-error *ngIf="partnerIndustryForm.controls.fiscal_code.hasError('invalidFiscalCode')">Inserire un codice
+          fiscale
+          valido
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1">
+        <mat-icon class="icon-prefix" color="accent">domain </mat-icon>
+        <input matInput placeholder="Nome Ditta" formControlName="company_name" required>
+        <mat-error *ngIf="partnerIndustryForm.controls.company_name.errors?.required">Campo Obbligatorio</mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1">
+        <mat-icon class="icon-prefix" color="accent">receipt </mat-icon>
+        <input matInput placeholder="Partita Iva" formControlName="vat" required>
+        <mat-error *ngIf="partnerIndustryForm.controls.vat.errors?.required">Campo Obbligatorio</mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1">
+        <mat-icon class="icon-prefix" color="accent">work </mat-icon>
+        <input matInput placeholder="Settore Attività" formControlName="activity_sector" required>
+        <mat-error *ngIf="partnerIndustryForm.controls.activity_sector.errors?.required">Campo Obbligatorio</mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1">
+        <mat-icon class="icon-prefix" color="accent">location_city </mat-icon>
+        <input matInput placeholder="Indirizzo sede ( legale )" formControlName="address_legal" required>
+        <mat-error *ngIf="partnerIndustryForm.controls.address_legal.errors?.required">Campo Obbligatorio</mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1">
+        <mat-icon class="icon-prefix" color="accent">location_city </mat-icon>
+        <input matInput placeholder="CAP sede ( legale )" formControlName="postal_code_legal" required>
+        <mat-error *ngIf="partnerIndustryForm.controls.postal_code_legal.errors?.required">Campo Obbligatorio
+        </mat-error>
+        <mat-error *ngIf="partnerIndustryForm.controls.postal_code_legal.hasError('invalidNumber')">Inserire un CAP
+          valido
+        </mat-error>
+      </mat-form-field>
+      <mat-checkbox formControlName="checked" (click)="fillPartnerForm(partnerIndustryForm)">L'Indirizzo della
+        sede legale e quello
+        della
+        sede operativa
+        corrispondono</mat-checkbox>
+      <mat-form-field class="w-100 mt-1" *ngIf="!partnerIndustryForm.controls.checked.value">
+        <mat-icon class="icon-prefix" color="accent">location_city </mat-icon>
+        <input matInput placeholder="Indirizzo sede ( Operativa ) " formControlName="address_operative" required>
+        <mat-error *ngIf="partnerIndustryForm.controls.address_operative.errors?.required">Campo Obbligatorio
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1" *ngIf="!partnerIndustryForm.controls.checked.value">
+        <mat-icon class="icon-prefix" color="accent">location_city </mat-icon>
+        <input matInput placeholder="CAP sede ( Operativa ) " formControlName="postal_code_operative" required>
+        <mat-error *ngIf="partnerIndustryForm.controls.postal_code_operative.errors?.required">Campo Obbligatorio
+        </mat-error>
+        <mat-error *ngIf="partnerIndustryForm.controls.postal_code_operative.hasError('invalidNumber')">Inserire un CAP
+          valido
+        </mat-error>
+      </mat-form-field>
+      <div class="text-center mt-2">
+        <button mat-raised-button color="accent" type="submit">Diventa Partner!</button>
+      </div>
+    </form>
+
+    <!-- Fine ditta Form -->
+
+    <!-- Inizio Professionista Form -->
+
+    <form [formGroup]="partnerPrivateForm" (ngSubmit)="onPartnerFormSubmit(partnerPrivateForm.value)"
+      *ngIf="partner_type == 2 && partnerPrivateForm">
+      <mat-form-field class="w-100 mt-2">
+        <mat-icon color="accent" class="icon-prefix">person </mat-icon>
+        <input matInput placeholder=" Professionista ( Nome Cognome ) " formControlName="owner" required>
+        <mat-error *ngIf="partnerPrivateForm.controls.owner.errors?.required">Campo Obbligatorio</mat-error>
+        <mat-error *ngIf="partnerPrivateForm.controls.owner.hasError('invaildNameSurname')">Inserire Nome e Cognome
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1">
+        <mat-icon color="accent" class="icon-prefix">contact_mail </mat-icon>
+        <input matInput placeholder="Codice Fiscale" formControlName="fiscal_code" required>
+        <mat-error *ngIf="partnerPrivateForm.controls.fiscal_code.errors?.required">Campo Obbligatorio</mat-error>
+        <mat-error *ngIf="partnerPrivateForm.controls.fiscal_code.hasError('invalidFiscalCode')">Inserire un codice
+          fiscale
+          valido
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1">
+        <mat-icon class="icon-prefix" color="accent">receipt </mat-icon>
+        <input matInput placeholder="Partita Iva" formControlName="vat" required>
+        <mat-error *ngIf="partnerPrivateForm.controls.vat.errors?.required">Campo Obbligatorio</mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1">
+        <mat-icon class="icon-prefix" color="accent">work </mat-icon>
+        <input matInput placeholder="Settore Attività" formControlName="activity_sector" required>
+        <mat-error *ngIf="partnerPrivateForm.controls.activity_sector.errors?.required">Campo Obbligatorio</mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1">
+        <mat-icon class="icon-prefix" color="accent">location_city </mat-icon>
+        <input matInput placeholder="Indirizzo sede ( legale )" formControlName="address_legal" required>
+        <mat-error *ngIf="partnerPrivateForm.controls.address_legal.errors?.required">Campo Obbligatorio</mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1">
+        <mat-icon class="icon-prefix" color="accent">location_city </mat-icon>
+        <input matInput placeholder="CAP sede ( legale )" formControlName="postal_code_legal" required>
+        <mat-error *ngIf="partnerPrivateForm.controls.postal_code_legal.errors?.required">Campo Obbligatorio
+        </mat-error>
+        <mat-error *ngIf="partnerPrivateForm.controls.postal_code_legal.hasError('invalidNumber')">Inserire un CAP
+          valido
+        </mat-error>
+      </mat-form-field>
+      <mat-checkbox formControlName="checked" (click)="fillPartnerForm(partnerPrivateForm)">L'Indirizzo della
+        sede legale e quello
+        della
+        sede operativa
+        corrispondono</mat-checkbox>
+      <mat-form-field class="w-100 mt-1" *ngIf="!partnerPrivateForm.controls.checked.value">
+        <mat-icon class="icon-prefix" color="accent">location_city </mat-icon>
+        <input matInput placeholder="Indirizzo sede ( Operativa ) " formControlName="address_operative" required>
+        <mat-error *ngIf="partnerPrivateForm.controls.address_operative.errors?.required">Campo Obbligatorio
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1" *ngIf="!partnerPrivateForm.controls.checked.value">
+        <mat-icon class="icon-prefix" color="accent">location_city </mat-icon>
+        <input matInput placeholder="CAP sede ( Operativa ) " formControlName="postal_code_operative" required>
+        <mat-error *ngIf="partnerPrivateForm.controls.postal_code_operative.errors?.required">Campo Obbligatorio
+        </mat-error>
+        <mat-error *ngIf="partnerPrivateForm.controls.postal_code_operative.hasError('invalidNumber')">Inserire un CAP
+          valido
+        </mat-error>
+      </mat-form-field>
+      <div class="text-center mt-2">
+        <button mat-raised-button color="accent" type="submit">Diventa Partner!</button>
+      </div>
+    </form>
+
+
+    <!-- Fine Professionista Form -->
+
+    <!-- Inizio Societá Form -->
+    <form [formGroup]="partnerSocietyForm" (ngSubmit)="onPartnerFormSubmit(partnerSocietyForm.value)"
+      *ngIf="partner_type == 3 && partnerSocietyForm">
+      <mat-form-field class="w-100 mt-2">
+        <mat-icon class="icon-prefix" color="accent">person </mat-icon>
+        <input matInput placeholder=" Rappresentante Legale ( Nome Cognome ) " formControlName="owner" required>
+        <mat-error *ngIf="partnerSocietyForm.controls.owner.errors?.required">Campo Obbligatorio</mat-error>
+        <mat-error *ngIf="partnerSocietyForm.controls.owner.hasError('invaildNameSurname')">Inserire Nome e Cognome
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1">
+        <mat-icon class="icon-prefix" color="accent">contact_mail </mat-icon>
+        <input matInput placeholder="Codice Fiscale ( Rappresentante Legale )" formControlName="fiscal_code" required>
+        <mat-error *ngIf="partnerSocietyForm.controls.fiscal_code.errors?.required">Campo Obbligatorio</mat-error>
+        <mat-error *ngIf="partnerSocietyForm.controls.fiscal_code.hasError('invalidFiscalCode')">Inserire un codice
+          fiscale
+          valido
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1">
+        <mat-icon class="icon-prefix" color="accent">domain </mat-icon>
+        <input matInput placeholder="Nome  " formControlName="company_name" required>
+        <mat-error *ngIf="partnerSocietyForm.controls.company_name.errors?.required">Campo Obbligatorio</mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1">
+        <mat-icon class="icon-prefix" color="accent">receipt </mat-icon>
+        <input matInput placeholder="Partita Iva" formControlName="vat" required>
+        <mat-error *ngIf="partnerSocietyForm.controls.vat.errors?.required">Campo Obbligatorio</mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1">
+        <mat-icon class="icon-prefix" color="accent">work </mat-icon>
+        <input matInput placeholder="Settore Attività" formControlName="activity_sector" required>
+        <mat-error *ngIf="partnerSocietyForm.controls.activity_sector.errors?.required">Campo Obbligatorio</mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1">
+        <mat-icon class="icon-prefix" color="accent">location_city </mat-icon>
+        <input matInput placeholder="Indirizzo sede ( legale )" formControlName="address_legal" required>
+        <mat-error *ngIf="partnerSocietyForm.controls.address_legal.errors?.required">Campo Obbligatorio</mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1">
+        <mat-icon class="icon-prefix" color="accent">location_city </mat-icon>
+        <input matInput placeholder="CAP sede ( legale )" formControlName="postal_code_legal" required>
+        <mat-error *ngIf="partnerSocietyForm.controls.postal_code_legal.errors?.required">Campo Obbligatorio
+        </mat-error>
+        <mat-error *ngIf="partnerSocietyForm.controls.postal_code_legal.hasError('invalidNumber')">Inserire un CAP
+          valido
+        </mat-error>
+      </mat-form-field>
+      <mat-checkbox formControlName="checked" (click)="fillPartnerForm(partnerSocietyForm)">L'Indirizzo della
+        sede legale e quello
+        della
+        sede operativa
+        corrispondono</mat-checkbox>
+      <mat-form-field class="w-100 mt-1" *ngIf="!partnerSocietyForm.controls.checked.value">
+        <mat-icon class="icon-prefix" color="accent">location_city </mat-icon>
+        <input matInput placeholder="Indirizzo sede ( Operativa ) " formControlName="address_operative" required>
+        <mat-error *ngIf="partnerSocietyForm.controls.address_operative.errors?.required">Campo Obbligatorio
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 mt-1" *ngIf="!partnerSocietyForm.controls.checked.value">
+        <mat-icon class="icon-prefix" color="accent">location_city </mat-icon>
+        <input matInput placeholder="CAP sede ( Operativa ) " formControlName="postal_code_operative" required>
+        <mat-error *ngIf="partnerSocietyForm.controls.postal_code_operative.errors?.required">Campo Obbligatorio
+        </mat-error>
+        <mat-error *ngIf="partnerSocietyForm.controls.postal_code_operative.hasError('invalidNumber')">Inserire un CAP
+          valido
+        </mat-error>
+      </mat-form-field>
+      <div class="text-center mt-2">
+        <button mat-raised-button color="accent" type="submit">Diventa Partner!</button>
+      </div>
+    </form>
+
+    <!-- Fine Societá Form -->
+  </div>
+</div>
+
+<div fxLayout="row wrap" *ngIf="already_partner">
+  <div fxFlex="100" fxFlex.gt-sm="50" class="p-2" style="margin : 0 auto !important">
+    <div class="text-muted text-center">
+      <h1 class="w-100 mt-3">Stato della richiesta</h1>
+      <div [className]="confirmation_status < 1 ? ' elements_opaque mt-3' : ' elements_displayed mt-3'"
+        style="margin-left:7%">
+        <mat-icon class="icon-prefix" color="accent">email
+        </mat-icon>
+
+        Richiesta ricevuta correttamente
+
+      </div>
+
+      <div [className]="confirmation_status < 1 ? ' elements_opaque mt-3' : ' elements_displayed mt-3'"
+        style="margin-left:7%">
+        <mat-icon class="icon-prefix" color="accent" style="position: relative;">brightness_1
+        </mat-icon>
+
+      </div>
+
+      <div [className]="confirmation_status < 1 ? ' elements_opaque mt-3' : ' elements_displayed mt-3'"
+        style="margin-left:7%">
+        <mat-icon class="icon-prefix" color="accent" style="position: relative;">brightness_1
+        </mat-icon>
+
+      </div>
+
+      <div [className]="confirmation_status < 1 ? ' elements_opaque mt-3' : ' elements_displayed mt-3'"
+        style="margin-left:7%">
+        <mat-icon class="icon-prefix" color="accent" style="position: relative;">brightness_1
+        </mat-icon>
+
+      </div>
+      <div [className]="confirmation_status < 2 ? 'elements_opaque mt-3' : 'elements_displayed mt-3'"
+        style="margin-left:7%">
+        <mat-icon class="icon-prefix" color="accent">contact_mail
+        </mat-icon>
+
+        Stiamo controllando i tuoi dati.....
+
+      </div>
+
+      <div [className]="confirmation_status < 2 ? ' elements_opaque mt-3' : ' elements_displayed mt-3'"
+        style="margin-left:7%">
+        <mat-icon class="icon-prefix" color="accent" style="position: relative;">brightness_1
+        </mat-icon>
+
+      </div>
+
+      <div [className]="confirmation_status < 2 ? ' elements_opaque mt-3' : ' elements_displayed mt-3'"
+        style="margin-left:7%">
+        <mat-icon class="icon-prefix" color="accent" style="position: relative;">brightness_1
+        </mat-icon>
+
+      </div>
+
+      <div [className]="confirmation_status < 2 ? ' elements_opaque mt-3' : ' elements_displayed mt-3'"
+        style="margin-left:7%">
+        <mat-icon class="icon-prefix" color="accent" style="position: relative;">brightness_1
+        </mat-icon>
+
+      </div>
+
+      <div *ngIf="confirmation_status <= 3">
+        <div [className]="confirmation_status == 3 ? 'elements_displayed mt-3' :'elements_opaque mt-3'"
+          style="margin-left:7%">
+          <mat-icon class="icon-prefix" color="accent">check_circle
+          </mat-icon>
+
+          Complimenti! Sei un Partner di Buondeal!
+
+        </div>
+      </div>
+
+      <div *ngIf="confirmation_status == 4">
+        <div class="elements_displayed mt-3" style="margin-left:7%">
+          <mat-icon class="icon-prefix" color="accent">cancel
+          </mat-icon>
+
+          OPS! Qualcosa non torna.....contatta lo staff di Buondeal per avere chiarimenti!
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

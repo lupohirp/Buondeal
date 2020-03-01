@@ -1,0 +1,11 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+@import 'theme-reset';
+.app{
+    &.buondeal{
+        @import "skins/buondeal";
+        @include angular-material-theme($buondeal-theme);
+        @include theme-reset($buondeal-theme);
+    }
+}

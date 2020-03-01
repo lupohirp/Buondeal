@@ -1,0 +1,23 @@
+Ruoli - Amministratore
+	Gestori
+	Partner
+	Enti
+
+Amministratore gestisce Tutto
+Gestori gestiscono i Partner e gli Enti ( solo se autorizzati dai partner e/o enti ) 
+Il gestore é un partner
+
+Partner e  Enti gestiscono solo se stessi
+
+Diventa Partenr
+
+Dati Partner -> Titolare / rappresentante legale ( nome e cognome impostare la regex )
+		Ragione Sociale/Nome Ditta, C.F, Partita Iva, Settore Attivitá (select i dati che servono ) -> Altro e specificare il settore attivitá
+		Indirizzo, Cap, Citta' ( della sede legale ), email aziendale, numero di telefono 
+		CheckBox -> Sede operativa se uguale oppure far visualizzare il form
+
+Amministratore -> Aggiungere Categorie -> Ristorazione etctectect ( Tabella a parte );
+		  Gestore Banner -> Gestione Ordine dei banner e relativa visualizzazione;
+		  Gestione Logo / Spazi Pubblicitá.
+		  NewsLetter 
+		  Messaggistica -> Notifiche ( tabelle notifiche)		

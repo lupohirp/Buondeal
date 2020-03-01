@@ -1,0 +1,46 @@
+.main {
+  min-height: 400px;
+  min-height: calc(100vh - 288px);
+  padding: 16px;
+}
+.sidenav {
+  width: 250px;
+  padding: 8px 16px;
+  position: fixed;
+  .close {
+    margin-left: 178px;
+  }
+  .divider {
+    margin: 8px 0;
+  }
+}
+.cart-items-count {
+  position: absolute;
+  top: -3px;
+  left: 26px;
+  background: #f44336;
+  height: 18px;
+  width: 18px;
+  line-height: 18px;
+  border-radius: 50%;
+  font-size: 11px;
+}
+
+@media only screen and (max-device-width: 480px) {
+  .logo > img {
+    width: 100% !important;
+    margin-top: 3%;
+  }
+}
+
+//custom styles for tabs
+
+:host ::ng-deep {
+  .mat-tab-label {
+    opacity: 0.2 !important;
+  }
+
+  .mat-tab-label-active {
+    opacity: 0.6 !important;
+  }
+}

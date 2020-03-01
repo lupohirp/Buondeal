@@ -1,0 +1,70 @@
+<section class="comming_top_wrap" fxLayout="column" fxLayoutAlign="center center">
+    <div class="comming_top_content">
+        <div class="comming_logo"
+            [@animate]="{value:'*',params:{y:'250px',opacity:'0',delay:'100ms', duration: '400ms'}}">
+            <img src="../../../../assets/logo/logo-small.png">
+        </div>
+
+        <h1 class="text-white" [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'200ms', duration: '400ms'}}">
+            Coming soon
+        </h1>
+        <div class="count_down" fxLayoutGap.gt-sm="10px" fxLayout="row wrap" fxLayoutAlign="center center">
+            <mat-card fxFlex.xs="40%"
+                [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'400ms', duration: '400ms'}}">
+                <mat-card-title>
+                    <h3 class="text-white">{{timerCounter.d}}</h3>
+                </mat-card-title>
+                <mat-card-content>
+                    <p>Giorni</p>
+                </mat-card-content>
+            </mat-card>
+            <mat-card fxFlex.xs="40%"
+                [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'500ms', duration: '400ms'}}">
+                <mat-card-title>
+                    <h3 class="text-white">{{timerCounter.h}}</h3>
+                </mat-card-title>
+                <mat-card-content>
+                    <p>Ore</p>
+                </mat-card-content>
+            </mat-card>
+            <mat-card fxFlex.xs="40%"
+                [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'600ms', duration: '400ms'}}">
+                <mat-card-title>
+                    <h3 class="text-white">{{timerCounter.m}}</h3>
+                </mat-card-title>
+                <mat-card-content>
+                    <p>Minuti</p>
+                </mat-card-content>
+            </mat-card>
+            <mat-card fxFlex.xs="40%"
+                [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'700ms', duration: '400ms'}}">
+                <mat-card-title>
+                    <h3 class="text-white">{{timerCounter.s}}</h3>
+                </mat-card-title>
+                <mat-card-content>
+                    <p>Secondi</p>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</section>
+<section class="comming_soon_form t-pb-6 t-pt-8" fxLayout="row wrap" fxLayoutAlign="center center"
+    [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'800ms', duration: '400ms'}}">
+
+    <mat-card t-pb-3 fxFlex.gt-sm="40" fxFlex.lt-xs="100" t-round fxLayout="column" fxLayoutAlign="center center">
+        <mat-card-title>
+            <h2 class="text-white t-fw-400 t-ta-center">Vuoi essere informato sul mondo Buondeal?</h2>
+
+        </mat-card-title>
+        <mat-card-content t-pb-2 fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="10px"
+            style="font-size: 20px">
+
+            Scrivici a info@buondeal.com
+
+        </mat-card-content>
+        <mat-card-footer>
+
+        </mat-card-footer>
+    </mat-card>
+
+</section>

@@ -1,0 +1,65 @@
+<p class="text-muted">Ciao, <b>{{user.name}} {{user.surname}}!</b>
+  Dalla tua sezione "My Account" puoi vedere un resoconto delle tue attività recenti e puoi aggiornare le informazioni
+  del tuo account. Seleziona uno dei link qui sotto per vedere o aggiornare le informazioni.</p>
+
+<div fxLayout="row wrap" class="flex-wrapper">
+  <div fxFlex="33.3" fxFlex.sm="50" fxFlex.xs="100" class="col">
+    <mat-card class="p-0 mat-elevation-z1">
+      <mat-card-header class="p-1 account-card-title" fxLayoutAlign="space-between center">
+        <mat-card-title class="m-0">
+          <h3>Informazioni Account</h3>
+        </mat-card-title>
+        <a mat-icon-button routerLink="/account/information">
+          <mat-icon class="text-muted">edit</mat-icon>
+        </a>
+      </mat-card-header>
+      <div class="divider"></div>
+      <mat-card-content class="p-2 text-muted account-card-content">
+        <p>{{user.name}} {{user.surname}}</p>
+        <p>{{user.email}}</p>
+        <p><a routerLink="/account/change-password" class="primary-text">Cambia Password</a></p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="33.3" fxFlex.sm="50" fxFlex.xs="100" class="col">
+    <mat-card class="p-0">
+      <mat-card-header class="p-1 account-card-title" fxLayoutAlign="space-between center">
+        <mat-card-title class="m-0">
+          <h3>Indirizzi</h3>
+        </mat-card-title>
+        <a mat-icon-button routerLink="/account/addresses">
+          <mat-icon class="text-muted">edit</mat-icon>
+        </a>
+      </mat-card-header>
+      <div class="divider"></div>
+      <mat-card-content class="p-2 text-muted account-card-content">
+        <p>Indirizzo di fatturazione</p>
+        <p>Indirizzo di spedizione</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="33.3" fxFlex.sm="100" fxFlex.xs="100" class="col">
+    <mat-card class="p-0">
+      <mat-card-header class="p-1 account-card-title" fxLayoutAlign="space-between center">
+        <mat-card-title class="m-0">
+          <h3>Ordini</h3>
+        </mat-card-title>
+        <a mat-icon-button routerLink="/account/orders">
+          <mat-icon class="text-muted">edit</mat-icon>
+        </a>
+      </mat-card-header>
+      <div class="divider"></div>
+      <mat-card-content class="p-2 text-muted account-card-content">
+        <!-- <p class="">Completati</p>
+        <mat-progress-bar value="75" color="primary"></mat-progress-bar>
+        <p class="mt-1">Processing</p>
+        <mat-progress-bar value="25" color="primary"></mat-progress-bar>
+        <p class="mt-1">On hold</p>
+        <mat-progress-bar value="65" color="warn"></mat-progress-bar>
+        <p class="mt-1">Refunded</p>
+        <mat-progress-bar value="25" color="primary"></mat-progress-bar> -->
+        <p> In arrivo....</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
