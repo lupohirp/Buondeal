@@ -48,13 +48,13 @@ export class AuthorizationService {
 
   public setUserCookie(): void {
     if (this.user && !this.cookieService.check('buondeal')) {
-      this.cookieService.set('buondeal', this.user, 365);
+      this.cookieService.set('buondeal', this.user, 365, '/');
     }
   }
 
   public deleteCookies(): void {
-    this.cookieService.delete('buondeal');
-    this.cookieService.delete('bdealak');
+    this.cookieService.delete('buondeal', '/');
+    this.cookieService.delete('bdealak', '/');
   }
 
   public isAuthenticated(): boolean {
@@ -63,7 +63,7 @@ export class AuthorizationService {
 
   public setTokenCookie(): void {
     if (this.token) {
-      this.cookieService.set('bdealak', this.token, 365);
+      this.cookieService.set('bdealak', this.token, 365, '/');
     }
   }
 
