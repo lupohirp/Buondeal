@@ -55,11 +55,6 @@ export class DealComponent implements OnInit, OnDestroy {
 
         this.deal = result;
 
-        if (this.deal.variants[0].images && this.deal.variants[0].images.length > 0) {
-          this.image = this.deal.variants[0].images[0].image_path;
-          this.zoomImage = this.deal.variants[0].images[0].zoomed_path;
-        }
-
         if (this.deal.variants) {
           this.mapVariant = {};
 

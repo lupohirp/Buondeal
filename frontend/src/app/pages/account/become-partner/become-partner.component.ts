@@ -32,7 +32,7 @@ export class BecomePartnerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this._authorizationService.getUser().partner) {
       this.already_partner = true;
-      this.confirmation_status = this._authorizationService.getUser().partner.confirmation_status;
+      this.confirmation_status = this._authorizationService.getUser().partner.partner_type;
 
     }
   }

@@ -10,7 +10,7 @@
                     <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md=50 fxFlex.lg="50" fxFlex.xl="50">
                         <div fxLayout='row wrap'>
                             <div fxFlex.xs="15" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15">
-                                <div class="product-detail-image-gallery pr-4">
+                                <div class="product-detail-image-gallery pr-4" *ngIf="deal?.images">
                                     <mat-grid-list cols="1" rowHeight="1:1" gutterSize="20px">
                                         <mat-grid-tile *ngFor="let img of deal?.images; let i=index">
                                             <div class="product-image-gallery-item">
@@ -31,6 +31,10 @@
                                      -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
                                       box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); top: 0;left: 100%;" lensStyle="width:100px; height:100px" containerStyle="">
                                 </embryo-deals-ImgZoom>
+                            </div>
+                            <div *ngIf="!deal?.images" fxFlex.xs="85" fxFlex.sm="85" fxFlex.md="85" fxFlex.lg="85"
+                                fxFlex.xl="85" class="text-muted w-100 mt-3">
+                                Seleziona una variante per il prodotto
                             </div>
                         </div>
                     </div>

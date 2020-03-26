@@ -130,6 +130,6 @@ export class Partner {
     public telephone_number?: string, // Telefono aziendale
     public address_operative?: string, // Indirizzo Sede Operativa
     public cap_operative?: string, // Cap Sede Operativa
-    public confirmation_status?: string
+    public partner_type?: string
   ) { }
 }

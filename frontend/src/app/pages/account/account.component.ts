@@ -25,7 +25,7 @@ export class AccountComponent implements OnInit {
       this.sidenavOpen = false;
     }
 
-    if (this._authorizationService.getUser() && this._authorizationService.getUser().partner && this._authorizationService.getUser().partner.confirmation_status == '3') {
+    if (this._authorizationService.getUser() && this._authorizationService.getUser().partner && this._authorizationService.getUser().partner.partner_type) {
       this.links.forEach((value, index) => {
         if (value.name == 'Diventa partner') {
           this.links.splice(index, 1);

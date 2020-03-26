@@ -55,10 +55,6 @@ export class ProductComponent implements OnInit, OnDestroy {
 
         this.product = result;
 
-        if (this.product.variants[0].images) {
-          this.image = this.product.variants[0].images[0].image_path;
-          this.zoomImage = this.product.variants[0].images[0].zoomed_path;
-        }
 
         if (this.product.variants) {
           this.mapVariant = {};
