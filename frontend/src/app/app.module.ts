@@ -25,6 +25,8 @@ import { FooterComponent } from './theme/components/footer/footer.component';
 import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { AuthGuard } from './shared/services/authguard/auth.guard';
 import { ProductsAuthGuard } from './shared/services/authguard/products_auth.guard';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 
@@ -35,7 +37,8 @@ import { ProductsAuthGuard } from './shared/services/authguard/products_auth.gua
     HttpClientModule,
     NgxSpinnerModule,
     SharedModule,
-    routing
+    routing,
+    ServiceWorkerModule.register('./ngsw-worker.js', { enabled: environment.production })
   ],
   declarations: [
     AppComponent,
