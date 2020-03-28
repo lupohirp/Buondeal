@@ -48,34 +48,39 @@
             <h4 class="card-title">I miei oggetti in vendita</h4>
           </div>
           <div class="card-body">
-            <mat-form-field *ngIf="dataSource" appearance="outline">
+            <mat-form-field *ngIf="dataSource" appearance="outline" style="float:right;">
               <mat-label>Filtra i risultati</mat-label>
               <input matInput (keyup)="applyFilter($event.target.value)">
             </mat-form-field>
-            <div class="responsive_table" *ngIf="!hideComponents()">
 
+
+            <div class="p-3 header-row text-muted mt-3 table-responsive-md" *ngIf="!hideComponents()">
               <table mat-table [dataSource]="dataSource" class="w-100" *ngIf="dataSource">
 
                 <ng-container matColumnDef="title">
-                  <mat-header-cell *matHeaderCellDef> Titolo</mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.title}} </mat-cell>
+                  <th mat-header-cell *matHeaderCellDef> Titolo</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.title}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="categories">
-                  <mat-header-cell *matHeaderCellDef> Categorie </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.categories}} </mat-cell>
+                  <th mat-header-cell *matHeaderCellDef> Categorie </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.categories}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="start_sold_date">
-                  <mat-header-cell *matHeaderCellDef> Messo in vendita il </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.start_sold_date | date: 'dd/MM/yyyy'}} </mat-cell>
+                  <th mat-header-cell *matHeaderCellDef> Messo in vendita il </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.start_sold_date | date: 'dd/MM/yyyy'}} </td>
                 </ng-container>
 
 
-                <ng-container matColumnDef="actions">
-                  <mat-header-cell *matHeaderCellDef> Azioni </mat-header-cell>
 
-                  <mat-cell *matCellDef="let element">
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef> Azioni </th>
+
+                  <td mat-cell *matCellDef="let element">
                     <button mat-icon-button [matMenuTriggerFor]="appMenu" aria-label="">
                       <mat-icon>more_vert</mat-icon>
                     </button>
@@ -84,13 +89,12 @@
                       <button mat-menu-item (click)="editProduct(element)">Modifica</button>
                       <button mat-menu-item (click)="deleteProduct(element)">Elimina</button>
                     </mat-menu>
-                  </mat-cell>
+                  </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
               </table>
-
               <div *ngIf="!dataSource && !emptySoldObject" style="display: flex;margin: 0 auto !important">
                 <mat-progress-spinner color="accent" mode="indeterminate" strokeWidth="3" [diameter]="50">
                 </mat-progress-spinner>
@@ -103,7 +107,7 @@
           </div>
           <div class="card-footer">
             <div fxLayout="row" fxLayoutAlign="space-between center" class="p-3 header-row text-muted"
-              style="float: right" *ngIf="!hideComponents()">
+              style="float: right" *ngIf="!hideComponents()" style="margin: 0 auto;">
               <mat-paginator #soldPaginator [length]="selledObjects" [pageSize]="5" [hidePageSize]="true">
               </mat-paginator>
 
