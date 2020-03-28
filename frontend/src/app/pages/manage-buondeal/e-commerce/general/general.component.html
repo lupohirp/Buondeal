@@ -38,7 +38,7 @@
 
         <mat-form-field class="mt-2 ml-2" appearance="outline">
           <mat-label>Tipologia di prodotto</mat-label>
-          <mat-select formControlName="subcategory_id"
+          <mat-select formControlName="subcategory_id" (selectionChange)="emitEvent()"
             [disableControl]="!generalFormGroup.controls.category_id.value || generalFormGroup.controls.category_id.value == ''">
             <mat-option *ngFor="let subcategory of subcategory_list" [value]="subcategory.id">
               {{ subcategory.name }}

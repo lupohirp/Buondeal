@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { HttpService } from 'src/app/shared/services/http/http.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatHorizontalStepper } from '@angular/material/stepper';
+import { MatStepper } from '@angular/material/stepper';
 import { environment } from 'src/environments/environment';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { AuthorizationService } from 'src/app/shared/services/security/authorization.service';
@@ -12,15 +12,17 @@ import { Variants, Product, Subcategory } from 'src/app/app.models';
 import { Router, ActivatedRoute } from '@angular/router';
 import { VariantsComponent } from './variants/variants.component';
 import { GeneralComponent } from './general/general.component';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-e-commerce',
   templateUrl: './e-commerce.component.html',
   styleUrls: ['./e-commerce.component.scss']
 })
-export class ECommerceComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ECommerceComponent implements OnInit, OnDestroy {
 
-  @ViewChild(MatHorizontalStepper, { static: true }) stepper: MatHorizontalStepper;
+  @ViewChild(MatStepper, { static: true }) stepper: MatStepper;
   @ViewChild(VariantsComponent, { static: true }) variantsComponent: VariantsComponent;
   @ViewChild(GeneralComponent, { static: true }) generalComponent: GeneralComponent;
 
@@ -33,12 +35,11 @@ export class ECommerceComponent implements OnInit, OnDestroy, AfterViewInit {
   anagVariants: Array<Variants> = [];
 
 
-  constructor(private _formBuilder: FormBuilder, private _activatedRoute: ActivatedRoute, private _dialog: MatDialog, private _http: HttpService, private _snackbar: MatSnackBar, private _authorizationService: AuthorizationService, private _router: Router) { }
 
-  ngAfterViewInit() {
-    this.stepper._getIndicatorType = () => 'number';
 
-  }
+
+  constructor(private _breakpointObserver: BreakpointObserver, private _formBuilder: FormBuilder, private _activatedRoute: ActivatedRoute, private _dialog: MatDialog, private _http: HttpService, private _snackbar: MatSnackBar, private _authorizationService: AuthorizationService, private _router: Router) { }
+
 
   ngOnInit() {
 
@@ -114,12 +115,10 @@ export class ECommerceComponent implements OnInit, OnDestroy, AfterViewInit {
           console.log(error);
           this._router.navigate(['manage-buondeal/sell/error']);
         });
-    } else {
-      this.openDialog();
     }
   }
 
-  loadVariants($step) {
+  loadVariants() {
     if (this.generalFormGroup.controls.category_id.value && this.generalFormGroup.controls.subcategory_id.value) {
       const params = {
         'cat_id': this.generalFormGroup.controls.category_id.value,
@@ -135,39 +134,32 @@ export class ECommerceComponent implements OnInit, OnDestroy, AfterViewInit {
               this.variantsComponent.alreadyVariantsLoaded = true;
             }
           }
-          this.stepper.selectedIndex = $step;
         },
         error => {
           this._snackbar.open('Errore Generico', '×', { panelClass: 'error', verticalPosition: 'top', duration: 3000 });
           console.log(error);
-          this.stepper.selectedIndex = $step;
         });
 
     }
   }
 
-  openDialog(): void {
-    const dialogRef = this._dialog.open(ErrorDialogComponent, {
-      width: '300px',
-      data: {}
-    });
+  // openDialog(): void {
+  //   const dialogRef = this._dialog.open(ErrorDialogComponent, {
+  //     width: '300px',
+  //     data: {}
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (!this.isGeneralValid()) {
-        this.stepper.selectedIndex = 0;
-      } else if (!this.isVariantsValid()) {
-        this.stepper.selectedIndex = 1;
-      } else if (!this.isShipmentValid()) {
-        this.stepper.selectedIndex = 2;
-      }
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     if (!this.isGeneralValid()) {
+  //       this.stepper.selectedIndex = 0;
+  //     } else if (!this.isVariantsValid()) {
+  //       this.stepper.selectedIndex = 1;
+  //     } else if (!this.isShipmentValid()) {
+  //       this.stepper.selectedIndex = 2;
+  //     }
+  //   });
+  // }
 
-  selectionChange($event) {
-    if ($event.selectedIndex === 1) {
-      this.loadVariants(1);
-    }
-  }
 
   ngOnDestroy() {
     console.log('Component Destroyed');

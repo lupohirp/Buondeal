@@ -19,7 +19,7 @@ export class AppComponent implements AfterViewInit {
   @HostListener('window:appinstalled', ['$event'])
   onAppInstalles(e) {
     console.log("installed");
-    this._pushNotificationService.displayNotification();
+    this._pushNotificationService.displayNotification("Ciao");
   }
 
 

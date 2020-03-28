@@ -7,19 +7,19 @@ export class PushNotificationsService {
 
   constructor() { }
 
-  displayNotification() {
+  displayNotification(body) {
     if (Notification.permission == 'granted') {
       navigator.serviceWorker.getRegistration().then(function (reg) {
         var options = {
-          body: 'Here is a notification body!',
-          icon: 'images/example.png',
+          body: body,
+          icon: '../../assets/icons/icon-72x72.png',
           vibrate: [100, 50, 100],
           data: {
             dateOfArrival: Date.now(),
             primaryKey: 1
           }
         };
-        reg.showNotification('Hello world!', options);
+        reg.showNotification('Buondeal', options);
       });
     }
   }

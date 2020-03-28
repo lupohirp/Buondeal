@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpService } from 'src/app/shared/services/http/http.service';
 import { environment } from 'src/environments/environment';
@@ -18,6 +18,10 @@ import { Subscription, Observable } from 'rxjs';
 export class GeneralComponent implements OnInit, OnDestroy {
 
   @Input('formGroup') generalFormGroup;
+  @Output()
+  loadVariants = new EventEmitter();
+
+
   category_list: Array<Category> = [];
   subcategory_list: Array<Subcategory> = [];
   public Editor = ClassicEditor;
@@ -35,7 +39,9 @@ export class GeneralComponent implements OnInit, OnDestroy {
       });
   }
 
-
+  emitEvent() {
+    this.loadVariants.emit();
+  }
 
 
   loadSubcategories($category_id) {
