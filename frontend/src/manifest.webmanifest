@@ -1,7 +1,6 @@
 {
   "name": "Buondeal",
-  "short_name": "Buondeal",
-  "theme_color": "#1976d2",
+  "theme_color": "#000000",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",

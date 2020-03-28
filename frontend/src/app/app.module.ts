@@ -27,6 +27,7 @@ import { AuthGuard } from './shared/services/authguard/auth.guard';
 import { ProductsAuthGuard } from './shared/services/authguard/products_auth.guard';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { PushNotificationsService } from './shared/services/push-notifications.service';
 
 
 
@@ -54,6 +55,7 @@ import { environment } from '../environments/environment';
     AppService,
     AuthGuard,
     ProductsAuthGuard,
+    PushNotificationsService,
     { provide: OverlayContainer, useClass: CustomOverlayContainer },
     { provide: MAT_MENU_SCROLL_STRATEGY, useFactory: menuScrollStrategy, deps: [Overlay] },
     { provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true },

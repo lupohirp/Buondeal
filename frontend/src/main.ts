@@ -11,6 +11,10 @@ if (environment.production) {
   enableProdMode();
 }
 
+Notification.requestPermission(function (status) {
+  console.log('Notification permission status:', status);
+});
+
 defineCustomElements(window);
 
 platformBrowserDynamic().bootstrapModule(AppModule)
