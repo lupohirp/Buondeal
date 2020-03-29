@@ -3,60 +3,125 @@
   <mat-sidenav-content class="account-content" ngClass.gt-sm="p-left">
 
     <form [formGroup]="generalFormGroup">
-      <div fxLayout="row" fxLayoutAlign="space-between center" class="header-row text-muted">
-        <h1>Anagrafica</h1>
+
+      <!-- Start : L & XL Devices -->
+
+      <div *ngIf="!smallScreen">
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="header-row text-muted">
+          <h1>Anagrafica</h1>
+        </div>
+
+        <div fxLayout="row" class=" text-muted w-100 mt-3">
+          <mat-checkbox>In bozza</mat-checkbox>
+        </div>
+
+        <div fxLayout="row" class=" text-muted w-100 mt-1">
+          Seleziona per nasconderlo nelle ricerche e non mostrarlo nello store
+        </div>
+
+        <div fxLayout="row" class="text-muted w-100 mt-1">
+          <!-- <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm.value)"> -->
+          <mat-form-field class="mt-2" style="width: 50%;" appearance="outline">
+            <mat-label>Titolo</mat-label>
+            <input matInput formControlName="title">
+            <mat-error *ngIf="generalFormGroup.controls.title.errors?.required">Campo Obbligatorio</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row" class="text-muted w-50 mt-1">
+          <mat-form-field class="mt-2" appearance="outline">
+            <mat-label>Categoria</mat-label>
+            <mat-select formControlName="category_id" (selectionChange)="loadSubcategories($event.value)">
+              <mat-option *ngFor="let category of category_list" [value]="category.id">
+                {{ category.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="generalFormGroup.controls.category_id.errors?.required">
+              Campo Obbligatorio</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="mt-2 ml-2" appearance="outline">
+            <mat-label>Tipologia di prodotto</mat-label>
+            <mat-select formControlName="subcategory_id" (selectionChange)="emitEvent()"
+              [disableControl]="!generalFormGroup.controls.category_id.value || generalFormGroup.controls.category_id.value == ''">
+              <mat-option *ngFor="let subcategory of subcategory_list" [value]="subcategory.id">
+                {{ subcategory.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="generalFormGroup.controls.subcategory_id.errors?.required">
+              Campo Obbligatorio</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row" class=" text-muted w-100 mt-3">
+          <h1>Descrizione</h1>
+
+        </div>
+        <ckeditor class="mt-2" formControlName="description" [editor]="Editor" [config]="{language : 'it'}">
+        </ckeditor>
+        <mat-error *ngIf="generalFormGroup.controls.description?.required">Campo Obbligatorio</mat-error>
       </div>
 
-      <div fxLayout="row" class=" text-muted w-100 mt-3">
-        <mat-checkbox>In bozza</mat-checkbox>
+      <!-- End : L & XL Devices -->
+
+
+      <div *ngIf="smallScreen">
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="header-row text-muted">
+          <h1>Anagrafica</h1>
+        </div>
+
+        <div fxLayout="row" class=" text-muted w-100 mt-3">
+          <mat-checkbox>In bozza</mat-checkbox>
+        </div>
+
+        <div fxLayout="row" class=" text-muted w-100 mt-1">
+          Seleziona per nasconderlo nelle ricerche e non mostrarlo nello store
+        </div>
+
+        <div fxLayout="row" class="text-muted w-100">
+          <mat-form-field class="mt-2" style="width: 100%;" appearance="outline">
+            <mat-label>Titolo</mat-label>
+            <input matInput formControlName="title">
+            <mat-error *ngIf="generalFormGroup.controls.title.errors?.required">Campo Obbligatorio</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row" class="text-muted w-100">
+          <mat-form-field class="mt-2 w-100" appearance="outline">
+            <mat-label>Categoria</mat-label>
+            <mat-select formControlName="category_id" (selectionChange)="loadSubcategories($event.value)">
+              <mat-option *ngFor="let category of category_list" [value]="category.id">
+                {{ category.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="generalFormGroup.controls.category_id.errors?.required">
+              Campo Obbligatorio</mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" class="text-muted w-100">
+          <mat-form-field class="mt-2 w-100" appearance="outline">
+            <mat-label>Tipologia di prodotto</mat-label>
+            <mat-select formControlName="subcategory_id" (selectionChange)="emitEvent()"
+              [disableControl]="!generalFormGroup.controls.category_id.value || generalFormGroup.controls.category_id.value == ''">
+              <mat-option *ngFor="let subcategory of subcategory_list" [value]="subcategory.id">
+                {{ subcategory.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="generalFormGroup.controls.subcategory_id.errors?.required">
+              Campo Obbligatorio</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row" class=" text-muted w-100 mt-3">
+          <h1>Descrizione</h1>
+
+        </div>
+        <!-- [formControl]="fruitCtrl" -->
+        <ckeditor class="mt-2" formControlName="description" [editor]="Editor" [config]="{language : 'it'}">
+        </ckeditor>
+        <mat-error *ngIf="generalFormGroup.controls.description?.required">Campo Obbligatorio</mat-error>
       </div>
 
-      <div fxLayout="row" class=" text-muted w-100 mt-1">
-        Seleziona per nasconderlo nelle ricerche e non mostrarlo nello store
-      </div>
-
-      <div fxLayout="row" class="text-muted w-100 mt-1">
-        <!-- <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm.value)"> -->
-        <mat-form-field class="mt-2" style="width: 50%;" appearance="outline">
-          <mat-label>Titolo</mat-label>
-          <input matInput formControlName="title">
-          <mat-error *ngIf="generalFormGroup.controls.title.errors?.required">Campo Obbligatorio</mat-error>
-        </mat-form-field>
-      </div>
-
-      <div fxLayout="row" class="text-muted w-50 mt-1">
-        <mat-form-field class="mt-2" appearance="outline">
-          <mat-label>Categoria</mat-label>
-          <mat-select formControlName="category_id" (selectionChange)="loadSubcategories($event.value)">
-            <mat-option *ngFor="let category of category_list" [value]="category.id">
-              {{ category.name }}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="generalFormGroup.controls.category_id.errors?.required">
-            Campo Obbligatorio</mat-error>
-        </mat-form-field>
-
-        <mat-form-field class="mt-2 ml-2" appearance="outline">
-          <mat-label>Tipologia di prodotto</mat-label>
-          <mat-select formControlName="subcategory_id" (selectionChange)="emitEvent()"
-            [disableControl]="!generalFormGroup.controls.category_id.value || generalFormGroup.controls.category_id.value == ''">
-            <mat-option *ngFor="let subcategory of subcategory_list" [value]="subcategory.id">
-              {{ subcategory.name }}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="generalFormGroup.controls.subcategory_id.errors?.required">
-            Campo Obbligatorio</mat-error>
-        </mat-form-field>
-      </div>
-
-      <div fxLayout="row" class=" text-muted w-100 mt-3">
-        <h1>Descrizione</h1>
-
-      </div>
-      <!-- [formControl]="fruitCtrl" -->
-      <ckeditor class="mt-2" formControlName="description" [editor]="Editor" [config]="{language : 'it'}">
-      </ckeditor>
-      <mat-error *ngIf="generalFormGroup.controls.description?.required">Campo Obbligatorio</mat-error>
 
     </form>
   </mat-sidenav-content>

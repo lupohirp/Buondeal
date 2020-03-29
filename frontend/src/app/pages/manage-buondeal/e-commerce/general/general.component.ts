@@ -6,6 +6,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { Category, Subcategory } from 'src/app/app.models';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Subscription, Observable } from 'rxjs';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 
 
@@ -25,8 +26,17 @@ export class GeneralComponent implements OnInit, OnDestroy {
   category_list: Array<Category> = [];
   subcategory_list: Array<Subcategory> = [];
   public Editor = ClassicEditor;
+  smallScreen: boolean;
 
-  constructor(private _http: HttpService, private _snackbar: MatSnackBar) { }
+  constructor(private _http: HttpService, private _snackbar: MatSnackBar, private _breakpointObserver: BreakpointObserver) {
+    _breakpointObserver.observe([
+      Breakpoints.XSmall,
+      Breakpoints.Small,
+      Breakpoints.Medium
+    ]).subscribe(result => {
+      this.smallScreen = result.matches;
+    });
+  }
 
   ngOnInit() {
     this._http.sendGetReqeust(environment.backend_url + 'api/v1/anag_categories/', {}, true).pipe(untilDestroyed(this)).subscribe(
