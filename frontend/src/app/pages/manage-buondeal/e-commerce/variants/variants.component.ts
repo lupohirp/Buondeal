@@ -12,6 +12,7 @@ import { ErrorDialogComponent } from '../error-dialog/error-dialog/error-dialog.
 import { ImagesInfoDialogComponent } from '../images-info-dialog/images-info-dialog.component';
 import { WrongFileDialogComponent } from '../wrong-file-dialog/wrong-file-dialog.component';
 import differenceBy from 'lodash/differenceBy'
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 
 @Component({
@@ -36,8 +37,17 @@ export class VariantsComponent implements OnInit, OnDestroy {
 
   mapDisabledVariants = {};
   alreadyVariantsLoaded: boolean = false;
+  smallScreen: boolean;
 
-  constructor(private _formBuilder: FormBuilder, private _http: HttpService, private _snackbar: MatSnackBar, private _ngxPicaService: NgxPicaService, private _dialog: MatDialog) { }
+  constructor(private _breakpointObserver: BreakpointObserver, private _formBuilder: FormBuilder, private _http: HttpService, private _snackbar: MatSnackBar, private _ngxPicaService: NgxPicaService, private _dialog: MatDialog) {
+    _breakpointObserver.observe([
+      Breakpoints.XSmall,
+      Breakpoints.Small,
+      Breakpoints.Medium
+    ]).subscribe(result => {
+      this.smallScreen = result.matches;
+    });
+  }
 
   ngOnInit() {
 

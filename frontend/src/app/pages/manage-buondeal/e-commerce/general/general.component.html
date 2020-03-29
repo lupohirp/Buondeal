@@ -1,4 +1,4 @@
-<mat-sidenav-container style="background-color: white; margin:3%">
+<mat-sidenav-container class="margin-container">
 
   <mat-sidenav-content class="account-content" ngClass.gt-sm="p-left">
 
@@ -87,7 +87,7 @@
         </div>
 
         <div fxLayout="row" class="text-muted w-100">
-          <mat-form-field class="mt-2 w-100" appearance="outline">
+          <mat-form-field class="mt-2 w-100 " appearance="outline">
             <mat-label>Categoria</mat-label>
             <mat-select formControlName="category_id" (selectionChange)="loadSubcategories($event.value)">
               <mat-option *ngFor="let category of category_list" [value]="category.id">

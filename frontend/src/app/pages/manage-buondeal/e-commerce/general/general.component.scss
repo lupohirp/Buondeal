@@ -1,6 +1,17 @@
-
- ::ng-deep {
-.ck-editor__editable {
-    min-height: 150px;
+::ng-deep {
+    .ck-editor__editable {
+        min-height: 150px;
+    }
 }
+
+@media (max-width: 600px) {
+    .margin-container {
+        background-color: white !important;
+    }
+}
+
+
+.margin-container {
+    background-color: white !important;
+    margin: "3%" !important;
 }
