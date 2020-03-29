@@ -1,163 +1,335 @@
-<mat-sidenav-container style="background-color: white; margin:3%">
+<mat-sidenav-container class="margin-container">
     <mat-sidenav-content class="account-content custom-overflow" ngClass.gt-sm="p-left">
-        <div fxLayout="row">
-            <button mat-raised-button (click)=" addVariant(numberOfVariants + 1)" color="accent"
-                style=" float:right !important">
-                Aggiungi Variante</button>
+        <div *ngIf="!smallScreen">
+            <div fxLayout="row">
+                <button mat-raised-button (click)=" addVariant(numberOfVariants + 1)" color="accent"
+                    style=" float:right !important">
+                    Aggiungi Variante</button>
+            </div>
+        </div>
+        <div *ngIf="smallScreen">
+            <div fxLayout="row">
+                <button mat-raised-button (click)=" addVariant(numberOfVariants + 1)" class="w-100" color="accent"
+                    style=" float:right !important">
+                    Aggiungi Variante</button>
+            </div>
         </div>
 
-        <form [formGroup]="generalFormGroup">
-            <div formArrayName="variants" *ngFor="let item of generalFormGroup.get('variants').controls; let i = index;"
-                class="mt-2">
-                <div [formGroupName]="i">
 
-                    <mat-divider></mat-divider>
-                    <div fxLayout="row" fxLayoutAlign="space-between center" class="header-row text-muted w-25">
-                        <h1>Variante #{{i + 1}}</h1>
-                        <button mat-fab *ngIf=" i !=0" (click)="removeVariant(i)" color="warn" class="mt-1"
-                            style="margin-right: 30px">
-                            <mat-icon>cancel</mat-icon>
-                        </button>
+        <form [formGroup]="generalFormGroup">
+            <div *ngIf="!smallScreen">
+                <div formArrayName="variants"
+                    *ngFor="let item of generalFormGroup.get('variants').controls; let i = index;" class="mt-2">
+                    <div [formGroupName]="i">
+
+                        <mat-divider></mat-divider>
+                        <div fxLayout="row" fxLayoutAlign="space-between center" class="header-row text-muted w-25">
+                            <h1>Variante #{{i + 1}}</h1>
+                            <button mat-icon-button *ngIf=" i !=0" (click)="removeVariant(i)" color="warn" class="mt-1"
+                                style="margin-right: 30px">
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </div>
+
+                        <div formArrayName="specifications"
+                            *ngFor="let specItem of generalFormGroup.get('variants').controls[i].get('specifications').controls; let j = index;"
+                            class="mt-2">
+                            <div [formGroupName]="j">
+                                <div fxLayout="row" class="text-muted w-100 mt-1">
+                                    <mat-form-field class="mt-1" appearance="outline">
+                                        <mat-label>Seleziona</mat-label>
+                                        <mat-select formControlName="variants_id"
+                                            (selectionChange)="pushToArrayDiff($event,i,j)">
+                                            <mat-option *ngFor="let variant of selectableVariants[i][j]"
+                                                [value]="variant.id">
+                                                {{ variant.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="
+                        generalFormGroup.controls.variants.controls[i].controls.specifications.controls[j].controls.variants_id.errors?.required">
+                                            Campo Obbligatorio</mat-error>
+                                    </mat-form-field>
+
+
+                                    <mat-form-field class="mt-1 ml-1 w-50" appearance="outline"
+                                        *ngIf="generalFormGroup.controls.variants.value[i].specifications[j].variants_id">
+                                        <mat-label>{{generalFormGroup.controls.variants.value[i].titleAnagVariant}}
+                                        </mat-label>
+                                        <input matInput formControlName="titleVariant"
+                                            [disableControl]="generalFormGroup.controls.variants.value[i].titleAnagVariant == ''">
+                                        <mat-error
+                                            *ngIf="
+                      generalFormGroup.controls.variants.controls[i].controls.specifications.controls[j].controls.titleVariant.errors?.required">
+                                            Campo Obbligatorio</mat-error>
+                                    </mat-form-field>
+
+                                    <button mat-fab (click)="addVariantSpecification(i)" class="mt-1 ml-1"
+                                        *ngIf="generalFormGroup.controls.variants.value[i].specifications[j].variants_id && selectableVariants[i][j].length > 1"
+                                        (click)="setVariantsValues(i,j+1)">
+                                        <mat-icon>add_circle</mat-icon>
+                                    </button>
+
+                                    <button mat-fab color="warn" (click)="removeVariantSpecification(i,j)"
+                                        class="mt-1 ml-1" *ngIf=" j > 0" (click)="removeVariantsValues(i,j-1)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm.value)"> -->
+                        <mat-form-field class="mt-2 w-25" appearance="outline">
+                            <mat-label>Prezzo</mat-label>
+                            <input matInput formControlName="priceVariant" appTwoDigitDecimaNumber>
+                            <mat-error
+                                *ngIf="generalFormGroup.controls.variants.controls[i].controls.priceVariant.errors?.required">
+                                Campo Obbligatorio</mat-error>
+                        </mat-form-field>
+
+                        <!-- <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm.value)"> -->
+                        <mat-form-field class="mt-2 w-25 ml-1" appearance="outline">
+                            <mat-label>Prezzo scontato</mat-label>
+                            <input matInput formControlName="discountPriceVariant" appTwoDigitDecimaNumber>
+                            <mat-error
+                                *ngIf="generalFormGroup.controls.variants.controls[i].controls.discountPriceVariant.errors?.required">
+                                Campo Obbligatorio</mat-error>
+                            <mat-error
+                                *ngIf="generalFormGroup.controls.variants.controls[i].controls.discountPriceVariant.errors?.wrongPrice">
+                                Il prezzo scontato non puó essere superiore al prezzo normale</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field class="mt-2 w-25 ml-1" appearance="outline">
+                            <mat-label>Quantitá</mat-label>
+                            <input matInput formControlName="quantity">
+                            <mat-error
+                                *ngIf="generalFormGroup.controls.variants.controls[i].controls.quantity.errors?.required">
+                                Campo Obbligatorio</mat-error>
+                        </mat-form-field>
+
+
+                        <div fxLayout="row" class=" text-muted w-100 mt-3">
+                            <mat-checkbox formControlName="shouldUseURL">Vuoi reindirizzare il tuo acquisto su un altro
+                                sito?
+                            </mat-checkbox>
+                        </div>
+
+                        <div fxLayout="row" class=" text-muted w-100 mt-3">
+                            <mat-form-field class="mt-1" style="width: 50%;" appearance="outline">
+                                <mat-label>URL</mat-label>
+                                <input matInput formControlName="url"
+                                    [disableControl]="!generalFormGroup.controls.variants.value[i].shouldUseURL">
+                                <mat-error
+                                    *ngIf="generalFormGroup.controls.variants.controls[i].controls.url.errors?.required">
+                                    Campo
+                                    Obbligatorio</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" class=" text-muted w-100 mt-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Data di partenza del coupon</mat-label>
+                                <input matInput [min]=" minDate" [matDatepicker]="dp3" disabled
+                                    formControlName="couponStartDate" (dateChange)="addEvent($event,i)">
+                                <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                                <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class=" ml-1">
+                                <mat-label>Data di scadenza del coupon</mat-label>
+                                <input matInput [min]="generalFormGroup.controls.variants.value[i].minselectableRange"
+                                    [max]="generalFormGroup.controls.variants.value[i].maxselectableRange"
+                                    [matDatepicker]="dp4" disabled formControlName="couponEndDate">
+                                <mat-datepicker-toggle matSuffix [for]="dp4"></mat-datepicker-toggle>
+                                <mat-datepicker #dp4 disabled="false"></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
                     </div>
 
-                    <div formArrayName="specifications"
-                        *ngFor="let specItem of generalFormGroup.get('variants').controls[i].get('specifications').controls; let j = index;"
-                        class="mt-2">
-                        <div [formGroupName]="j">
-                            <div fxLayout="row" class="text-muted w-100 mt-1">
-                                <mat-form-field class="mt-1" appearance="outline">
-                                    <mat-label>Seleziona</mat-label>
-                                    <mat-select formControlName="variants_id"
-                                        (selectionChange)="pushToArrayDiff($event,i,j)">
-                                        <mat-option *ngFor="let variant of selectableVariants[i][j]"
-                                            [value]="variant.id">
-                                            {{ variant.name }}
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-error
-                                        *ngIf="
-                        generalFormGroup.controls.variants.controls[i].controls.specifications.controls[j].controls.variants_id.errors?.required">
-                                        Campo Obbligatorio</mat-error>
-                                </mat-form-field>
 
 
-                                <mat-form-field class="mt-1 ml-1 w-50" appearance="outline"
-                                    *ngIf="generalFormGroup.controls.variants.value[i].specifications[j].variants_id">
-                                    <mat-label>{{generalFormGroup.controls.variants.value[i].titleAnagVariant}}
-                                    </mat-label>
-                                    <input matInput formControlName="titleVariant"
-                                        [disableControl]="generalFormGroup.controls.variants.value[i].titleAnagVariant == ''">
-                                    <mat-error
-                                        *ngIf="
-                      generalFormGroup.controls.variants.controls[i].controls.specifications.controls[j].controls.titleVariant.errors?.required">
-                                        Campo Obbligatorio</mat-error>
-                                </mat-form-field>
 
-                                <button mat-fab (click)="addVariantSpecification(i)" class="mt-1 ml-1"
-                                    *ngIf="generalFormGroup.controls.variants.value[i].specifications[j].variants_id && selectableVariants[i][j].length > 1"
-                                    (click)="setVariantsValues(i,j+1)">
-                                    <mat-icon>add_circle</mat-icon>
-                                </button>
-
-                                <button mat-fab color="warn" (click)="removeVariantSpecification(i,j)" class="mt-1 ml-1"
-                                    *ngIf=" j > 0" (click)="removeVariantsValues(i,j-1)">
-                                    <mat-icon>delete</mat-icon>
-                                </button>
-                            </div>
-
+                    <div fxLayout="row mt-1" class="header-row text-muted">
+                        <h1>Seleziona Immagini per la variante</h1>
+                    </div>
+                    <div fxLayout="row" class="text-muted w-100 mt-3">
+                        <div class="w-25">
+                            <button mat-raised-button color="accent" (click)="fileInput.click()">seleziona</button>
+                            <input accept="image/png, image/jpeg, image/jpg" style="display: none" type="file"
+                                (change)="onFileChanged($event,i)" #fileInput multiple="true">
+                        </div>
+                        <div class="w-75 ml-1">
+                            <mat-grid-list cols="3">
+                                <mat-grid-tile
+                                    *ngFor="let image of generalFormGroup.get('variants').controls[i].get('images').controls; let y = index;">
+                                    <img [src]="image.controls.base64_image.value" />
+                                    <button mat-fab (click)="removeSelectedFile(i,y)"
+                                        style="position: inherit;margin-top: -115px;margin-left: 115px;">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-grid-tile>
+                            </mat-grid-list>
                         </div>
                     </div>
-                    <!-- <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm.value)"> -->
-                    <mat-form-field class="mt-2 w-25" appearance="outline">
-                        <mat-label>Prezzo</mat-label>
-                        <input matInput formControlName="priceVariant" appTwoDigitDecimaNumber>
-                        <mat-error
-                            *ngIf="generalFormGroup.controls.variants.controls[i].controls.priceVariant.errors?.required">
-                            Campo Obbligatorio</mat-error>
-                    </mat-form-field>
-
-                    <!-- <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm.value)"> -->
-                    <mat-form-field class="mt-2 w-25 ml-1" appearance="outline">
-                        <mat-label>Prezzo scontato</mat-label>
-                        <input matInput formControlName="discountPriceVariant" appTwoDigitDecimaNumber>
-                        <mat-error
-                            *ngIf="generalFormGroup.controls.variants.controls[i].controls.discountPriceVariant.errors?.required">
-                            Campo Obbligatorio</mat-error>
-                        <mat-error
-                            *ngIf="generalFormGroup.controls.variants.controls[i].controls.discountPriceVariant.errors?.wrongPrice">
-                            Il prezzo scontato non puó essere superiore al prezzo normale</mat-error>
-                    </mat-form-field>
-
-                    <mat-form-field class="mt-2 w-25 ml-1" appearance="outline">
-                        <mat-label>Quantitá</mat-label>
-                        <input matInput formControlName="quantity">
-                        <mat-error
-                            *ngIf="generalFormGroup.controls.variants.controls[i].controls.quantity.errors?.required">
-                            Campo Obbligatorio</mat-error>
-                    </mat-form-field>
-
-
-                    <div fxLayout="row" class=" text-muted w-100 mt-3">
-                        <mat-checkbox formControlName="shouldUseURL">Vuoi reindirizzare il tuo acquisto su un altro
-                            sito?
-                        </mat-checkbox>
-                    </div>
-
-                    <div fxLayout="row" class=" text-muted w-100 mt-3">
-                        <mat-form-field class="mt-1" style="width: 50%;" appearance="outline">
-                            <mat-label>URL</mat-label>
-                            <input matInput formControlName="url"
-                                [disableControl]="!generalFormGroup.controls.variants.value[i].shouldUseURL">
-                            <mat-error
-                                *ngIf="generalFormGroup.controls.variants.controls[i].controls.url.errors?.required">
-                                Campo
-                                Obbligatorio</mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" class=" text-muted w-100 mt-3">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Data di partenza del coupon</mat-label>
-                            <input matInput [min]=" minDate" [matDatepicker]="dp3" disabled
-                                formControlName="couponStartDate" (dateChange)="addEvent($event,i)">
-                            <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
-                            <mat-datepicker #dp3 disabled="false"></mat-datepicker>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" class=" ml-1">
-                            <mat-label>Data di scadenza del coupon</mat-label>
-                            <input matInput [min]="generalFormGroup.controls.variants.value[i].minselectableRange"
-                                [max]="generalFormGroup.controls.variants.value[i].maxselectableRange"
-                                [matDatepicker]="dp4" disabled formControlName="couponEndDate">
-                            <mat-datepicker-toggle matSuffix [for]="dp4"></mat-datepicker-toggle>
-                            <mat-datepicker #dp4 disabled="false"></mat-datepicker>
-                        </mat-form-field>
-                    </div>
                 </div>
+            </div>
+
+            <div *ngIf="smallScreen">
+                <div formArrayName="variants"
+                    *ngFor="let item of generalFormGroup.get('variants').controls; let i = index;" class="mt-2">
+                    <div [formGroupName]="i">
+
+                        <mat-divider></mat-divider>
+                        <div fxLayout="row" fxLayoutAlign="space-between center" class="header-row text-muted w-100">
+                            <h1>Variante #{{i + 1}}</h1>
+                            <button mat-icon-button *ngIf=" i !=0" (click)="removeVariant(i)" color="warn" class="mt-1"
+                                style="margin-right: 30px">
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </div>
+
+                        <div formArrayName="specifications"
+                            *ngFor="let specItem of generalFormGroup.get('variants').controls[i].get('specifications').controls; let j = index;"
+                            class="mt-2">
+                            <div [formGroupName]="j">
+                                <div fxLayout="row" class="text-muted w-100 mt-1">
+                                    <mat-form-field class="mt-1 w-100" appearance="outline">
+                                        <mat-label>Seleziona</mat-label>
+                                        <mat-select formControlName="variants_id"
+                                            (selectionChange)="pushToArrayDiff($event,i,j)">
+                                            <mat-option *ngFor="let variant of selectableVariants[i][j]"
+                                                [value]="variant.id">
+                                                {{ variant.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="
+                      generalFormGroup.controls.variants.controls[i].controls.specifications.controls[j].controls.variants_id.errors?.required">
+                                            Campo Obbligatorio</mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="row" class="text-muted w-100 mt-1" style="align-items:center">
+                                    <mat-form-field class="mt-1 ml-1 w-75" appearance="outline"
+                                        *ngIf="generalFormGroup.controls.variants.value[i].specifications[j].variants_id">
+                                        <mat-label>{{generalFormGroup.controls.variants.value[i].titleAnagVariant}}
+                                        </mat-label>
+                                        <input matInput formControlName="titleVariant"
+                                            [disableControl]="generalFormGroup.controls.variants.value[i].titleAnagVariant == ''">
+                                        <mat-error
+                                            *ngIf="
+                    generalFormGroup.controls.variants.controls[i].controls.specifications.controls[j].controls.titleVariant.errors?.required">
+                                            Campo Obbligatorio</mat-error>
+                                    </mat-form-field>
+
+                                    <button mat-icon-button (click)="addVariantSpecification(i)" class="ml-3 w-12"
+                                        style="margin-bottom: 15px;"
+                                        *ngIf="generalFormGroup.controls.variants.value[i].specifications[j].variants_id && selectableVariants[i][j].length > 1"
+                                        (click)="setVariantsValues(i,j+1)">
+                                        <mat-icon>add_circle</mat-icon>
+                                    </button>
+
+                                    <button mat-icon-button color="warn" (click)="removeVariantSpecification(i,j)"
+                                        class=" ml-3 w-12" style="margin-bottom: 15px;" *ngIf=" j > 0"
+                                        (click)="removeVariantsValues(i,j-1)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" class="text-muted w-100 mt-1">
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>Prezzo</mat-label>
+                                <input matInput formControlName="priceVariant" appTwoDigitDecimaNumber>
+                                <mat-error
+                                    *ngIf="generalFormGroup.controls.variants.controls[i].controls.priceVariant.errors?.required">
+                                    Campo Obbligatorio</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" class="text-muted w-100 mt-1">
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>Prezzo scontato</mat-label>
+                                <input matInput formControlName="discountPriceVariant" appTwoDigitDecimaNumber>
+                                <mat-error
+                                    *ngIf="generalFormGroup.controls.variants.controls[i].controls.discountPriceVariant.errors?.required">
+                                    Campo Obbligatorio</mat-error>
+                                <mat-error
+                                    *ngIf="generalFormGroup.controls.variants.controls[i].controls.discountPriceVariant.errors?.wrongPrice">
+                                    Il prezzo scontato non puó essere superiore al prezzo normale</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" class="text-muted w-100 mt-1">
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>Quantitá</mat-label>
+                                <input matInput formControlName="quantity">
+                                <mat-error
+                                    *ngIf="generalFormGroup.controls.variants.controls[i].controls.quantity.errors?.required">
+                                    Campo Obbligatorio</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" class=" text-muted w-100 mt-3">
+                            <mat-checkbox formControlName="shouldUseURL">Vuoi reindirizzare il tuo acquisto su un altro
+                                sito?
+                            </mat-checkbox>
+                        </div>
+
+                        <div fxLayout="row" class=" text-muted w-100 mt-3">
+                            <mat-form-field class="mt-1" class="w-100" appearance="outline">
+                                <mat-label>URL</mat-label>
+                                <input matInput formControlName="url"
+                                    [disableControl]="!generalFormGroup.controls.variants.value[i].shouldUseURL">
+                                <mat-error
+                                    *ngIf="generalFormGroup.controls.variants.controls[i].controls.url.errors?.required">
+                                    Campo
+                                    Obbligatorio</mat-error>
+                            </mat-form-field>
+                        </div>
 
 
+                        <div fxLayout="row" class=" text-muted w-100 mt-3">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Data di partenza del coupon</mat-label>
+                                <input matInput [min]=" minDate" [matDatepicker]="dp3" disabled
+                                    formControlName="couponStartDate" (dateChange)="addEvent($event,i)">
+                                <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                                <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+                            </mat-form-field>
+                        </div>
 
-
-                <div fxLayout="row mt-1" class="header-row text-muted">
-                    <h1>Seleziona Immagini per la variante</h1>
-                </div>
-                <div fxLayout="row" class="text-muted w-100 mt-3">
-                    <div class="w-25">
-                        <button mat-raised-button color="accent" (click)="fileInput.click()">seleziona</button>
-                        <input accept="image/png, image/jpeg, image/jpg" style="display: none" type="file"
-                            (change)="onFileChanged($event,i)" #fileInput multiple="true">
+                        <div fxLayout="row" class=" text-muted w-100 mt-3">
+                            <mat-form-field appearance="outline" class="w-100 ml-1">
+                                <mat-label>Data di scadenza del coupon</mat-label>
+                                <input matInput [min]="generalFormGroup.controls.variants.value[i].minselectableRange"
+                                    [max]="generalFormGroup.controls.variants.value[i].maxselectableRange"
+                                    [matDatepicker]="dp4" disabled formControlName="couponEndDate">
+                                <mat-datepicker-toggle matSuffix [for]="dp4"></mat-datepicker-toggle>
+                                <mat-datepicker #dp4 disabled="false"></mat-datepicker>
+                            </mat-form-field>
+                        </div>
                     </div>
-                    <div class="w-75 ml-1">
-                        <mat-grid-list cols="3">
-                            <mat-grid-tile
-                                *ngFor="let image of generalFormGroup.get('variants').controls[i].get('images').controls; let y = index;">
-                                <img [src]="image.controls.base64_image.value" />
-                                <button mat-fab (click)="removeSelectedFile(i,y)"
-                                    style="position: inherit;margin-top: -125px;margin-left: 125px;">
-                                    <mat-icon>cancel</mat-icon>
-                                </button>
-                            </mat-grid-tile>
-                        </mat-grid-list>
+
+                    <div fxLayout="row mt-1" class="header-row text-muted">
+                        <h5>Seleziona immagini per la variante</h5>
+                    </div>
+                    <div fxLayout="row" class="text-muted w-100 mt-3">
+                        <div class="w-25">
+                            <button mat-raised-button color="accent" (click)="fileInput.click()">seleziona</button>
+                            <input accept="image/png, image/jpeg, image/jpg" style="display: none" type="file"
+                                (change)="onFileChanged($event,i)" #fileInput multiple="true">
+                        </div>
+                    </div>
+                    <div fxLayout="row" class="text-muted w-100 mt-3"
+                        *ngFor="let image of generalFormGroup.get('variants').controls[i].get('images').controls; let y = index;">
+                        <img class="thumb" [src]="image.controls.base64_image.value" />
+                        <button class="w-75" mat-icon-button (click)="removeSelectedFile(i,y)" style="margin-top: -2%;">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
                     </div>
                 </div>
             </div>

@@ -2,16 +2,18 @@
     overflow: hidden !important;
 }
 
+
 @media (max-width: 600px) {
     .margin-container {
         background-color: white !important;
+        margin: 0% !important;
     }
 }
 
 
 .margin-container {
     background-color: white !important;
-    margin: 3% !important;
+    margin: 3%;
 }
 
 ::ng-deep .mat-checkbox-layout {

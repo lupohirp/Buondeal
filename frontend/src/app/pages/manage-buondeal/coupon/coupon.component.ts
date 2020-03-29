@@ -14,6 +14,7 @@ import { ErrorDialogComponent } from '../e-commerce/error-dialog/error-dialog/er
 import { VariantsCouponComponent } from '../coupon/variants/variants.component';
 import { GeneralCouponComponent } from './general/general.component';
 import { NgxPicaService } from '@digitalascetic/ngx-pica';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 
 @Component({
@@ -23,7 +24,6 @@ import { NgxPicaService } from '@digitalascetic/ngx-pica';
 })
 export class CouponComponent implements OnInit {
 
-  @ViewChild(MatHorizontalStepper, { static: true }) stepper: MatHorizontalStepper;
   @ViewChild(VariantsCouponComponent, { static: true }) variantsComponent: VariantsCouponComponent;
   @ViewChild(GeneralCouponComponent, { static: true }) generalComponent: GeneralCouponComponent;
 
@@ -34,13 +34,18 @@ export class CouponComponent implements OnInit {
 
   generalFormGroup: FormGroup;
   anagVariants: Array<Variants> = [];
+  smallScreen: boolean;
 
 
-  constructor(private _formBuilder: FormBuilder, private _ngxPicaService: NgxPicaService, private _activatedRoute: ActivatedRoute, private _dialog: MatDialog, private _http: HttpService, private _snackbar: MatSnackBar, private _authorizationService: AuthorizationService, private _router: Router) { }
 
-  ngAfterViewInit() {
-    this.stepper._getIndicatorType = () => 'number';
-
+  constructor(private _breakpointObserver: BreakpointObserver, private _formBuilder: FormBuilder, private _ngxPicaService: NgxPicaService, private _activatedRoute: ActivatedRoute, private _dialog: MatDialog, private _http: HttpService, private _snackbar: MatSnackBar, private _authorizationService: AuthorizationService, private _router: Router) {
+    _breakpointObserver.observe([
+      Breakpoints.XSmall,
+      Breakpoints.Small,
+      Breakpoints.Medium
+    ]).subscribe(result => {
+      this.smallScreen = result.matches;
+    });
   }
 
   ngOnInit() {
@@ -129,7 +134,7 @@ export class CouponComponent implements OnInit {
     }
   }
 
-  loadVariants($step) {
+  loadVariants() {
     if (this.generalFormGroup.controls.category_id.value && this.generalFormGroup.controls.subcategory_id.value) {
       const params = {
         'cat_id': this.generalFormGroup.controls.category_id.value,
@@ -145,12 +150,10 @@ export class CouponComponent implements OnInit {
               this.variantsComponent.alreadyVariantsLoaded = true;
             }
           }
-          this.stepper.selectedIndex = $step;
         },
         error => {
           this._snackbar.open('Errore Generico', '×', { panelClass: 'error', verticalPosition: 'top', duration: 3000 });
           console.log(error);
-          this.stepper.selectedIndex = $step;
         });
 
     }
@@ -162,20 +165,12 @@ export class CouponComponent implements OnInit {
       data: {}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (!this.isGeneralValid()) {
-        this.stepper.selectedIndex = 0;
-      } else if (!this.isVariantsValid()) {
-        this.stepper.selectedIndex = 1;
-      } else if (!this.isShipmentValid()) {
-        this.stepper.selectedIndex = 2;
-      }
-    });
+
   }
 
   selectionChange($event) {
     if ($event.selectedIndex === 1) {
-      this.loadVariants(1);
+      this.loadVariants();
     }
   }
 

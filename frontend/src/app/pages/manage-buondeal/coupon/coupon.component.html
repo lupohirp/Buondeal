@@ -1,4 +1,46 @@
 <mat-sidenav-container style="background-color: white">
+    <div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title">Generale </h4>
+        </div>
+        <div class="card-body">
+            <app-general-coupon [formGroup]="generalFormGroup" (loadVariants)=loadVariants()></app-general-coupon>
+        </div>
+    </div>
+
+    <div class="card mt-2">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title">Varianti </h4>
+        </div>
+        <div class="card-body">
+            <app-variants-coupon [formGroup]="generalFormGroup" [anagVariants]="anagVariants"></app-variants-coupon>
+        </div>
+    </div>
+
+    <div class="card mt-2">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title">SEO </h4>
+        </div>
+        <div class="card-body">
+            <app-seo-definer-deals [formGroup]="generalFormGroup"></app-seo-definer-deals>
+        </div>
+    </div>
+
+    <div *ngIf="!smallScreen">
+        <button mat-raised-button (click)="saveObject()" color="accent"
+            style="float: right;margin-right: 3%; margin-top: 1%;margin-bottom: 1%">Vendi!</button>
+    </div>
+
+    <div *ngIf="smallScreen">
+        <button mat-raised-button (click)="saveObject()" color="accent" class="w-100">Vendi!</button>
+    </div>
+
+</mat-sidenav-container>
+
+
+
+
+<!-- <mat-sidenav-container style="background-color: white">
     <mat-horizontal-stepper color="accent" [linear]="false" #stepper (selectionChange)="selectionChange($event)">
         <mat-step>
             <ng-template matStepLabel><span [ngStyle]="{'color': isGeneralValid() ? '#248eb9' : 'red'}">Generale</span>
@@ -47,4 +89,4 @@
 
     </mat-horizontal-stepper>
 
-</mat-sidenav-container>
+</mat-sidenav-container> -->

@@ -7,6 +7,7 @@ import { NgxPicaService, NgxPicaErrorInterface, NgxPicaResizeOptionsInterface } 
 import differenceBy from 'lodash/differenceBy';
 import { WrongFileDialogComponent } from '../../e-commerce/wrong-file-dialog/wrong-file-dialog.component';
 import { ImagesInfoDialogComponent } from '../../e-commerce/images-info-dialog/images-info-dialog.component';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 
 @Component({
@@ -34,7 +35,19 @@ export class VariantsCouponComponent implements OnInit, OnDestroy {
   mapDisabledVariants = {};
   alreadyVariantsLoaded: boolean = false;
 
-  constructor(private _formBuilder: FormBuilder, private _ngxPicaService: NgxPicaService, private _dialog: MatDialog) { }
+  smallScreen: boolean;
+
+
+  constructor(private _formBuilder: FormBuilder, private _ngxPicaService: NgxPicaService, private _dialog: MatDialog, private _breakpointObserver: BreakpointObserver) {
+    _breakpointObserver.observe([
+      Breakpoints.XSmall,
+      Breakpoints.Small,
+      Breakpoints.Medium
+    ]).subscribe(result => {
+      this.smallScreen = result.matches;
+    });
+
+  }
 
   ngOnInit() {
 
