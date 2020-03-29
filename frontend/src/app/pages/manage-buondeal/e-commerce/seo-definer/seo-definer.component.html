@@ -1,25 +1,46 @@
-<mat-sidenav-container style="background-color: white; margin:3%">
+<mat-sidenav-container class="margin-container">
     <mat-sidenav-content class="account-content custom-overflow" ngClass.gt-sm="p-left">
         <div>
             <form [formGroup]="generalFormGroup">
+                <div *ngIf="!smallScreen">
 
-                <div fxLayout="row" class="text-muted w-100 mt-1">
-                    <!-- <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm.value)"> -->
-                    <mat-form-field class="mt-2" style="width: 50%;" appearance="outline">
-                        <mat-label>SEO - Titolo</mat-label>
-                        <input matInput formControlName="seo_title">
-                    </mat-form-field>
+                    <div fxLayout="row" class="text-muted w-100 mt-1">
+                        <!-- <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm.value)"> -->
+                        <mat-form-field class="mt-2" style="width: 50%;" appearance="outline">
+                            <mat-label>SEO - Titolo</mat-label>
+                            <input matInput formControlName="seo_title">
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" class="text-muted w-100 mt-1">
+                        <!-- <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm.value)"> -->
+                        <mat-form-field class="mt-2" style="width: 70%;" appearance="outline">
+                            <mat-label>SEO - Descrizione</mat-label>
+                            <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                formControlName="seo_description" cdkAutosizeMinRows="5"
+                                cdkAutosizeMaxRows="15"></textarea>
+                        </mat-form-field>
+                    </div>
                 </div>
+                <div *ngIf="smallScreen">
+                    <div fxLayout="row" class="text-muted w-100 mt-1">
+                        <!-- <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm.value)"> -->
+                        <mat-form-field class="mt-2 w-100" appearance="outline">
+                            <mat-label>SEO - Titolo</mat-label>
+                            <input matInput formControlName="seo_title">
+                        </mat-form-field>
+                    </div>
 
-                <div fxLayout="row" class="text-muted w-100 mt-1">
-                    <!-- <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm.value)"> -->
-                    <mat-form-field class="mt-2" style="width: 70%;" appearance="outline">
-                        <mat-label>SEO - Descrizione</mat-label>
-                        <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
-                            formControlName="seo_description" cdkAutosizeMinRows="5" cdkAutosizeMaxRows="15"></textarea>
-                    </mat-form-field>
+                    <div fxLayout="row" class="text-muted w-100 mt-1">
+                        <!-- <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm.value)"> -->
+                        <mat-form-field class="mt-2 w-100" appearance="outline">
+                            <mat-label>SEO - Descrizione</mat-label>
+                            <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                formControlName="seo_description" cdkAutosizeMinRows="5"
+                                cdkAutosizeMaxRows="15"></textarea>
+                        </mat-form-field>
+                    </div>
                 </div>
-
             </form>
         </div>
     </mat-sidenav-content>

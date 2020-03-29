@@ -1,10 +1,20 @@
 <mat-sidenav-container class="margin-container">
   <mat-sidenav-content class="account-content custom-overflow" ngClass.gt-sm="p-left">
-    <div fxLayout="row">
-      <button mat-raised-button (click)=" addVariant(numberOfVariants + 1)" color="accent"
-        style=" float:right !important">
-        Aggiungi Variante</button>
+    <div *ngIf="!smallScreen">
+      <div fxLayout="row">
+        <button mat-raised-button (click)=" addVariant(numberOfVariants + 1)" color="accent"
+          style=" float:right !important">
+          Aggiungi Variante</button>
+      </div>
     </div>
+    <div *ngIf="smallScreen">
+      <div fxLayout="row">
+        <button mat-raised-button (click)=" addVariant(numberOfVariants + 1)" class="w-100" color="accent"
+          style=" float:right !important">
+          Aggiungi Variante</button>
+      </div>
+    </div>
+
 
     <form [formGroup]="generalFormGroup">
       <div *ngIf="!smallScreen">
@@ -128,7 +138,7 @@
                   *ngFor="let image of generalFormGroup.get('variants').controls[i].get('images').controls; let y = index;">
                   <img [src]="image.controls.base64_image.value" />
                   <button mat-fab (click)="removeSelectedFile(i,y)"
-                    style="position: inherit;margin-top: -125px;margin-left: 125px;">
+                    style="position: inherit;margin-top: -115px;margin-left: 115px;">
                     <mat-icon>cancel</mat-icon>
                   </button>
                 </mat-grid-tile>
@@ -260,18 +270,13 @@
               <input accept="image/png, image/jpeg, image/jpg" style="display: none" type="file"
                 (change)="onFileChanged($event,i)" #fileInput multiple="true">
             </div>
-            <div class="w-75 ml-1">
-              <mat-grid-list cols="3">
-                <mat-grid-tile
-                  *ngFor="let image of generalFormGroup.get('variants').controls[i].get('images').controls; let y = index;">
-                  <img [src]="image.controls.base64_image.value" />
-                  <button mat-fab (click)="removeSelectedFile(i,y)"
-                    style="position: inherit;margin-top: -125px;margin-left: 125px;">
-                    <mat-icon>cancel</mat-icon>
-                  </button>
-                </mat-grid-tile>
-              </mat-grid-list>
-            </div>
+          </div>
+          <div fxLayout="row" class="text-muted w-100 mt-3"
+            *ngFor="let image of generalFormGroup.get('variants').controls[i].get('images').controls; let y = index;">
+            <img class="thumb" [src]="image.controls.base64_image.value" />
+            <button class="w-75" mat-icon-button (click)="removeSelectedFile(i,y)" style="margin-top: 2%;">
+              <mat-icon>cancel</mat-icon>
+            </button>
           </div>
         </div>
       </div>

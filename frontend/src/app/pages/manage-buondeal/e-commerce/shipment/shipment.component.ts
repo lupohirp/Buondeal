@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-shipment',
@@ -21,7 +22,18 @@ export class ShipmentComponent implements OnInit, OnDestroy {
   isFreeShipment = false;
   forwarderList;
 
-  constructor(private _formBuilder: FormBuilder, private _http: HttpService, private _snackbar: MatSnackBar) { }
+  smallScreen: boolean;
+
+
+  constructor(private _breakpointObserver: BreakpointObserver, private _formBuilder: FormBuilder, private _http: HttpService, private _snackbar: MatSnackBar) {
+    _breakpointObserver.observe([
+      Breakpoints.XSmall,
+      Breakpoints.Small,
+      Breakpoints.Medium
+    ]).subscribe(result => {
+      this.smallScreen = result.matches;
+    });
+  }
 
   ngOnInit() {
     const formArray: FormArray = this.generalFormGroup.get('shipments');
@@ -63,7 +75,7 @@ export class ShipmentComponent implements OnInit, OnDestroy {
     if (this.isFreeShipment) {
       this.generalFormGroup.get('is_free_shipment').setValue(true);
     } else {
-      this.generalFormGroup.get('is_free_shipment ').setValue(false);
+      this.generalFormGroup.get('is_free_shipment').setValue(false);
     }
   }
 

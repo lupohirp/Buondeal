@@ -11,7 +11,7 @@
 
 .margin-container {
     background-color: white !important;
-    margin: "3%" !important;
+    margin: 3% !important;
 }
 
 ::ng-deep .mat-checkbox-layout {
@@ -21,4 +21,12 @@
 // rather than center the checkbox, put the checkbox in the first line
 ::ng-deep .mat-checkbox-inner-container {
     margin-top: 3px !important;
+}
+
+
+.thumb {
+    width: 30%;
+    height: 30%;
+    object-fit: cover;
+    overflow: hidden;
 }

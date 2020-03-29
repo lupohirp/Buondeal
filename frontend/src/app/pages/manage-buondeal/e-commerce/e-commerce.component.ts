@@ -34,11 +34,19 @@ export class ECommerceComponent implements OnInit, OnDestroy {
   generalFormGroup: FormGroup;
   anagVariants: Array<Variants> = [];
 
+  smallScreen: boolean;
 
 
 
-
-  constructor(private _breakpointObserver: BreakpointObserver, private _formBuilder: FormBuilder, private _activatedRoute: ActivatedRoute, private _dialog: MatDialog, private _http: HttpService, private _snackbar: MatSnackBar, private _authorizationService: AuthorizationService, private _router: Router) { }
+  constructor(private _breakpointObserver: BreakpointObserver, private _formBuilder: FormBuilder, private _activatedRoute: ActivatedRoute, private _dialog: MatDialog, private _http: HttpService, private _snackbar: MatSnackBar, private _authorizationService: AuthorizationService, private _router: Router) {
+    _breakpointObserver.observe([
+      Breakpoints.XSmall,
+      Breakpoints.Small,
+      Breakpoints.Medium
+    ]).subscribe(result => {
+      this.smallScreen = result.matches;
+    });
+  }
 
 
   ngOnInit() {
@@ -115,6 +123,8 @@ export class ECommerceComponent implements OnInit, OnDestroy {
           console.log(error);
           this._router.navigate(['manage-buondeal/sell/error']);
         });
+    } else {
+      this.openDialog();
     }
   }
 
@@ -143,22 +153,12 @@ export class ECommerceComponent implements OnInit, OnDestroy {
     }
   }
 
-  // openDialog(): void {
-  //   const dialogRef = this._dialog.open(ErrorDialogComponent, {
-  //     width: '300px',
-  //     data: {}
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (!this.isGeneralValid()) {
-  //       this.stepper.selectedIndex = 0;
-  //     } else if (!this.isVariantsValid()) {
-  //       this.stepper.selectedIndex = 1;
-  //     } else if (!this.isShipmentValid()) {
-  //       this.stepper.selectedIndex = 2;
-  //     }
-  //   });
-  // }
+  openDialog(): void {
+    const dialogRef = this._dialog.open(ErrorDialogComponent, {
+      width: '300px',
+      data: {}
+    });
+  }
 
 
   ngOnDestroy() {
