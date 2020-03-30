@@ -2,12 +2,14 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import "~swiper/dist/css/swiper.min.css";
 @import "app/theme/styles/base";
 @import "app/theme/styles/theme";
 
 //import BuonDeal custom palette
 @import "assets/styles/buondeal_palette";
+
+@import "~swiper/dist/css/swiper.min.css"; 
+
 
 
 .card {
@@ -1072,13 +1074,13 @@
   }
 }
 
-table {
+.table-custom-responsive {
   width: 100%;
   table-layout: fixed;
 }
 
-th,
-td {
+.th-custom-responsive,
+.td-custom-respnsive {
   overflow: hidden;
   width: 200px;
   text-overflow: ellipsis;
