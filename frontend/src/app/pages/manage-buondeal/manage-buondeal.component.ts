@@ -42,6 +42,7 @@ export class ManageBuondealComponent implements OnInit, OnDestroy, AfterViewInit
 
   smallScreen: boolean;
   deals;
+  products;
 
 
   public links = [
@@ -53,9 +54,7 @@ export class ManageBuondealComponent implements OnInit, OnDestroy, AfterViewInit
 
   constructor(private _router: Router, private _http: HttpService, private _authService: AuthorizationService, private _snackbar: MatSnackBar, private _spinner: NgxSpinnerService, private _encoderService: EncoderService, private _breakpointObserver: BreakpointObserver) {
     _breakpointObserver.observe([
-      Breakpoints.XSmall,
-      Breakpoints.Small,
-      Breakpoints.Medium
+      Breakpoints.XSmall
     ]).subscribe(result => {
       this.smallScreen = result.matches;
     });
@@ -67,7 +66,7 @@ export class ManageBuondealComponent implements OnInit, OnDestroy, AfterViewInit
       spaceBetween: 16,
       keyboard: true,
       navigation: true,
-      pagination: false,
+      pagination: true,
       grabCursor: true,
       loop: false,
       preloadImages: false,
@@ -77,7 +76,7 @@ export class ManageBuondealComponent implements OnInit, OnDestroy, AfterViewInit
           slidesPerView: 1
         },
         740: {
-          slidesPerView: 2,
+          slidesPerView: 1,
         },
         960: {
           slidesPerView: 3,
@@ -139,6 +138,32 @@ export class ManageBuondealComponent implements OnInit, OnDestroy, AfterViewInit
     }
   }
 
+
+  applyFilterMobile(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+
+    this.products = this.dataSource.filteredData;
+  }
+
+  applyFilterDeals(filterValue: string) {
+    this.dealsDataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dealsDataSource.paginator) {
+      this.dealsDataSource.paginator.firstPage();
+    }
+  }
+
+  applyFilterDealsMobile(filterValue: string) {
+    this.dealsDataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dealsDataSource.paginator) {
+      this.dealsDataSource.paginator.firstPage();
+    }
+
+    this.deals = this.dealsDataSource.filteredData;
+  }
+
   loadSoldObjects() {
     const params = {
       'userid': this._authService.getUser().id
@@ -152,9 +177,9 @@ export class ManageBuondealComponent implements OnInit, OnDestroy, AfterViewInit
             return new Date(val2.start_sold_date).getTime() - new Date(val1.start_sold_date).getTime();
           });
           this.dataSource = new MatTableDataSource(result);
-          this.deals = result;
           this.dataSource.paginator = this.soldPaginator;
           this.selledObjects = result.length;
+          this.products = result;
         }
       },
       error => {
@@ -179,6 +204,8 @@ export class ManageBuondealComponent implements OnInit, OnDestroy, AfterViewInit
           this.dealsDataSource = new MatTableDataSource(result);
           this.dealsDataSource.paginator = this.dealsPaginator;
           this.dealsObjects = result.length;
+          this.deals = result;
+
         }
       },
       error => {
