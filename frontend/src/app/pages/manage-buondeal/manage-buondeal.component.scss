@@ -14,3 +14,15 @@
     background-color: white !important;
     margin: 3%;
 }
+
+
+.img-zoom-container {
+    width: 250px; height: 150px
+  }
+  
+  .thumb{
+    width:100%;
+    height:100%;
+    object-fit: cover;
+    overflow: hidden;
+  }

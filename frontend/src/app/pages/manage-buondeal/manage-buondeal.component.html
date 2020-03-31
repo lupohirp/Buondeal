@@ -142,6 +142,12 @@
                 <div class="swiper-wrapper h-100">
                   <div *ngFor="let product of products" class="swiper-slide">
                     <div (click)="viewProduct(product)">
+                      <div fxLayout="row" fxLayoutAlign="space-between center "
+                        style="margin:0 auto;justify-content: center;" class="img-zoom-container">
+                        <img [attr.data-src]="product.variants[0]?.images[0]?.image_path" class="swiper-lazy thumb" />
+                        <div class="swiper-lazy-preloader"></div>
+                      </div>
+
                       <div fxLayout="row" fxLayoutAlign="space-between center " style="margin:0 auto;">
                         <span class="mt-3 mb-3 text-muted">
                           <h3>{{product.title}}</h3>
@@ -260,8 +266,6 @@
               <h4 class="card-title">I miei deals </h4>
             </div>
             <div class="card-body">
-
-
               <div *ngIf="!deals && !emptyDealsObject"
                 style="display: flex;margin: 0 auto !important;justify-content:center">
                 <mat-progress-spinner color="accent" mode="indeterminate" strokeWidth="3" [diameter]="50">
@@ -285,6 +289,11 @@
                 <div class="swiper-wrapper h-100">
                   <div *ngFor="let deal of deals" class="swiper-slide">
                     <div (click)="viewDeal(deal)">
+                      <div fxLayout="row" fxLayoutAlign="space-between center "
+                        style="margin:0 auto;justify-content: center;" class="img-zoom-container">
+                        <img [attr.data-src]="deal.variants[0]?.images[0]?.image_path" class="swiper-lazy thumb" />
+                        <div class="swiper-lazy-preloader"></div>
+                      </div>
                       <div fxLayout="row" fxLayoutAlign="space-between center " style="margin:0 auto;">
                         <span class="mt-3 mb-3 text-muted">
                           <h3>{{deal.title}}</h3>
