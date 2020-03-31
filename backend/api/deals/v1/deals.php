@@ -54,6 +54,47 @@ switch ($method)
                 $deal = new deal($conn, $id, $userid, $title, $categories, $description, $is_draft);
                 $stmt = $deal->getFromUserId();
 
+                foreach ($stmt as $deal){
+
+                $anag_category = new Anag_category($conn, $deal->categories_id, null);
+                $anag_subcategory = new Anag_subcategory($conn, $deal->subcategories_id, null, null);
+
+                $deal->{'category'} = $anag_category->getCategoryFromId();
+                $stmt->{'subCategory'} = $anag_subcategory->getSubCategoryFromId();
+
+                $variant = new Variant($conn, null, null, null, null, $deal->id);
+                $deal->{'variants'} = $variant->getFromDealId();
+
+                foreach ($deal->variants as $item)
+                {
+
+                    $item->{'variant_details'} = [];
+
+                    $deal_variant_map = new Variant_Map($conn, null, $item->variant_id);
+                    $details = $deal_variant_map->getFromVariantId();
+
+                    foreach ($details as $details_item)
+                    {
+                        $variant_details = new Variant_Details($conn, $details_item->detail_id, null, null);
+                        $variant_detail = $variant_details->getFromVariantDetailId();
+
+                        $anag_variants = new Anag_variants($conn, $variant_detail->anag_variants_id, null, null);
+                        $anag_variant = $anag_variants->getVariantsFromId();
+                        $variant_detail->{'name'} = $anag_variant->name;
+
+                        array_push($item->variant_details, $variant_detail);
+                    }
+
+                    $images_variants_model = new DealImage($conn, null, null, $item->variant_id, null, null);
+                    $images_variants = $images_variants_model->getFromVariantId();
+
+                    $item->{'images'} = $images_variants;
+
+                }
+
+                $seo = new SEO($conn, $id, $deal->id, null, null);
+                $deal->{'seo'} = $seo->getFromDealId();
+            }
                 echo json_response(encodeString(json_encode($stmt)) , 200);
             }
             elseif (isset($_GET['deal_id']))

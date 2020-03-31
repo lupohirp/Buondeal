@@ -49,7 +49,45 @@ switch ($method) {
                 
                 $product = new Product($conn, $id, $userid, $title, $categories, $description, $is_draft);
                 $stmt    = $product->getFromUserId();
+                foreach ($stmt as $product) {
+                  
+                $anag_category    = new Anag_category($conn, $product->categories_id, null);
+                $anag_subcategory = new Anag_subcategory($conn, $product->subcategories_id, null, null);
                 
+                $product->{'category'}    = $anag_category->getCategoryFromId();
+                $product->{'subCategory'} = $anag_subcategory->getSubCategoryFromId();
+                
+                $variant          = new Variant($conn, null, null, null, null,  $product->id);
+                $product->{'variants'} = $variant->getFromProductId();
+                
+                foreach ($product->variants as $item) {
+                    
+                    $item->{'variant_details'} = [];
+
+                    $product_variant_map  = new Variant_Map($conn,null,$item->variant_id);
+                    $details = $product_variant_map->getFromVariantId();
+
+                    foreach ( $details as $details_item){
+                        $variant_details = new Variant_Details($conn,$details_item->detail_id,null,null);
+                        $variant_detail = $variant_details->getFromVariantDetailId();
+                    
+                        $anag_variants        = new Anag_variants($conn,  $variant_detail->anag_variants_id, null, null);
+                        $anag_variant = $anag_variants->getVariantsFromId();
+                        $variant_detail->{'name'} = $anag_variant->name;
+
+                        array_push($item->variant_details,$variant_detail);
+                    }
+
+                    $images_variants_model = new ProductImage($conn,null,null,$item->variant_id,null,null);
+                    $images_variants = $images_variants_model->getFromVariantId();
+    
+                    $item->{'images'} = $images_variants;
+
+                }
+
+                $seo = new SEO($conn, $id,$product->id,null,null);
+                $product->{'seo'}=$seo->getFromProductId();
+            }
                 
                 echo json_response(encodeString(json_encode($stmt)), 200);
             } elseif (isset($_GET['product_id'])) {

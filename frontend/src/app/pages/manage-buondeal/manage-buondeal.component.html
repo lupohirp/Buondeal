@@ -121,7 +121,8 @@
               <h4 class="card-title">I miei oggetti in vendita </h4>
             </div>
             <div class="card-body">
-              <div *ngIf="!products && !emptySoldObject" style="display: flex;margin: 0 auto !important">
+              <div *ngIf="!products && !emptySoldObject"
+                style="display: flex;margin: 0 auto !important;justify-content:center">
                 <mat-progress-spinner color="accent" mode="indeterminate" strokeWidth="3" [diameter]="50">
                 </mat-progress-spinner>
               </div>
@@ -261,7 +262,8 @@
             <div class="card-body">
 
 
-              <div *ngIf="!deals && !emptyDealsObject" style="display: flex;margin: 0 auto !important">
+              <div *ngIf="!deals && !emptyDealsObject"
+                style="display: flex;margin: 0 auto !important;justify-content:center">
                 <mat-progress-spinner color="accent" mode="indeterminate" strokeWidth="3" [diameter]="50">
                 </mat-progress-spinner>
               </div>
